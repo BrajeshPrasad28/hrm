@@ -1,6 +1,17 @@
 
 <?php require_once('dbconnection.php'); ?>
 
+<?php
+
+            $msg = " ";
+
+  if(isset($_POST['submit'])){
+echo "<pre>";
+    print_r($_POST); die();
+
+  }
+
+ ?>
 
 <!DOCTYPE html>
 <html>
@@ -21,6 +32,12 @@
 <link rel="stylesheet" href="../css/userstyle.css">
 <link rel="stylesheet" href="../css/userprofile.css">
 
+
+<style>
+  label{
+    font-weight: 700;
+  }
+</style>
 </head>
 <body>
 
@@ -36,44 +53,142 @@
 </div>
   <div class="card" style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
      <form id="leaveform" method="post" name="leaveform">
-     <div class="row" style="margin-top: 12px;">
-        <div class="col-25">
-           <label for="leave">Leave Type</label>
-        </div>
-        <div class="col-75">
-           <select name="leavetype"  style="background-color: white;border-top: none;border-left: none; border-right: none;">
-              <option value="" selected disabled hidden>Select Leave Type</option>
-              <option value="australia">Medical Leave</option>
-              <option value="canada">Casual Leave</option>
-              <option value="usa">Restricted Holiday Leave</option>
-           </select>
-        </div>
-     </div>
-     <div class="row">
-        <div class="col-25">
-           <label for="fdate">From Date</label>
-        </div>
-        <div class="col-75">
-           <input type="date" id="fdate" name="fromdate" style="border-radius: 0; border: 1px solid #ccc; float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;">
-        </div>
-        <div class="col-25">
-           <label for="todate">To Date</label>
-        </div>
-        <div class="col-75">
-           <input type="date" id="tdate" name="todate" style="border-radius: 0; border: 1px solid #ccc;  float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;">
-        </div>
-     </div>
-     <div class="row">
-        <div class="col-25">
-           <label for="description">Description</label>
-        </div>
-        <div class="col-75">
-           <textarea id="description" name="description" placeholder="Write something.." style="height:55px"></textarea>
-        </div>
-        <div style="padding: 30px; margin-right: 5px; margin-left: 231px;">
-           <input type="submit" value="Apply" id="apply">
-        </div>
-     </div></form>
+
+       <div class="row">
+         <div class="col-sm-8" style="padding-left: 60px;">
+           <?php
+
+            echo '<p class="error text-danger mt-3  ">'.$msg.'</p>' ?>
+            <div class="row" style="margin-top: 12px;">
+          <div class="col-25">
+             <label for="leave">Leave Type</label>
+          </div>
+          <div class="col-75">
+             <select name="leavetype"  style="background-color: white;border-top: none;border-left: none; border-right: none;">
+               <option value="">Select Leave Type</option>
+                  <?php
+                  if($emp->gender == 'Male'){
+                    $leave_type = 'leave_type';
+                    $leave_gender = 'Male';
+                    $query = mysqli_query($con, "SELECT * FROM $leave_type WHERE gender='$leave_gender'");
+
+                  }
+                  elseif($emp->gender == 'Female'){
+                    $leave_type = 'leave_type';
+                    $leave_gender = 'Female';
+                    $query = mysqli_query($con, "SELECT * FROM $leave_type ");
+
+
+                  }else{
+                      $leave_type = 'leave_type';
+                      $leave_gender = 'Other';
+                      $query = mysqli_query($con, "SELECT * FROM $leave_type ");
+
+
+                  }
+                  while($row = mysqli_fetch_object($query)){
+                    echo '<option value="'.$row->leave_id.'" >'.$row->type.'</option>';
+                  }
+
+                  ?>
+
+             </select>
+
+
+          </div>
+       </div>
+             <div class="row">
+                <div class="col-25">
+                   <label for="fdate">From Date</label>
+                </div>
+                <div class="col-75">
+                   <input type="date" id="fdate" name="fromdate" style="border-radius: 0; border: 1px solid #ccc; float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;">
+                </div>
+                <div class="col-25">
+                   <label for="todate">To Date</label>
+                </div>
+                <div class="col-75">
+                   <input type="date" id="tdate" name="todate" style="border-radius: 0; border: 1px solid #ccc;  float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;">
+                </div>
+             </div>
+             <div class="row">
+              <div class="col-25">
+                 <label for="description">Description</label>
+              </div>
+              <div class="col-75">
+                 <textarea id="description" name="description" placeholder="Write something.." style="height:55px"></textarea>
+              </div>
+              <div style="padding: 30px; margin-right: 5px; margin-left: 231px;">
+                 <input type="submit" name="submit" value="Apply" id="apply">
+              </div>
+           </div></form>
+         </div>
+         <div class="col-sm-4"  style="border-left: 1px solid #ddd; padding: 0px 30px;">
+           <div class="row">
+             <div class="col-sm-12">
+               <style>
+               table.leave tr th{
+                 width: 150px;
+               }
+               </style>
+               <h4 class="mt-4"> Leave Balance  :-</h4>
+                <table class="table leave">
+
+                <?php
+
+                  if($emp->gender == 'Male'){
+                    $leave_type = 'leave_type';
+                    $leave_gender = 'Male';
+                    $query2 = mysqli_query($con, "SELECT * FROM $leave_type WHERE gender='$leave_gender'");
+
+                  }
+                  elseif($emp->gender == 'Female'){
+                    $leave_type = 'leave_type';
+                    $leave_gender = 'Female';
+                    $query2 = mysqli_query($con, "SELECT * FROM $leave_type ");
+
+
+                  }else{
+                      $leave_type = 'leave_type';
+                      $leave_gender = 'Other';
+                      $query2 = mysqli_query($con, "SELECT * FROM $leave_type ");
+                  }
+
+
+
+                    while($leave = mysqli_fetch_object($query2)){
+                      if(isset($emp->emp_id) && isset($leave->type)){
+                                $query3 = mysqli_query($con, "SELECT * FROM leave_balance WHERE emp_id='$emp->emp_id' AND leave_type='$leave->type'") or die(mysqli_error($con));
+                                $obj = mysqli_fetch_object($query3);
+                                if($obj){
+
+                                  echo "<tr>
+                                          <th>  ".$leave->type."  </th>
+                                          <td>:  ".$obj->balance." / ".$leave->leave_blnc."</td>
+                                        </tr>
+                                        ";
+                                }else{
+
+                                  echo "<tr>
+                                          <th>  ".$leave->type."  </th>
+                                          <td>:  0 / ".$leave->leave_blnc."</td>
+                                        </tr>
+                                        ";
+
+                                }
+                            }
+
+                      }
+                  ?>
+
+
+                </table>
+             </div>
+           </div>
+         </div>
+
+       </div>
+
 
   </div>
       <!-- this  two div's are closed in other pages -->

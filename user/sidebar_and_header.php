@@ -10,8 +10,8 @@
          <!--<div class="images">-->
 
          <div class="text-center" style="margin-top: 58px;">
-           <img src=# alt="Avatar" class="Avatar" style="border-radius: 50%; height: auto; width: 100%; max-width: 100px;"> <br>
-           <h3 style="font-size: 20px; margin-top: 10px;"> </h3>
+           <img src="<?php echo $emp->photo; ?>" alt="Avatar" class="Avatar" style="border-radius: 50%; height: auto; width: 100%; max-width: 100px;"> <br>
+           <h3 style="font-size: 20px; margin-top: 10px;"> <?php echo $emp->first_name." ".$emp->last_name; ?></h3>
          </div>
 
      </div>

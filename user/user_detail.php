@@ -9,6 +9,6 @@ else{
   $password = $_SESSION['password'];
 
   $query = mysqli_query($con, "SELECT * FROM employees WHERE emp_id = '$emp_id' AND password = '$password'");
-  $admin = mysqli_fetch_object($query);
+  $emp = mysqli_fetch_object($query);
 }
  ?>
