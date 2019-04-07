@@ -1,0 +1,17 @@
+tr:hover{
+  background-color: #1C2833;
+}
+.content-inner{
+  padding: 20px;
+}
+select:hover{
+   box-shadow:4px 1px 20px lightblue;
+}
+input:hover{
+   box-shadow:4px 1px 20px lightblue;
+}
+header{
+  text-align: center;
+  color: teal;
+  font-weight: bold;
+}

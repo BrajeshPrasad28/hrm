@@ -1,0 +1,151 @@
+/* style starts here */
+*{
+margin: 0;
+padding: 0;
+}
+
+body{
+background-color: gray;
+font-family: sans-serif;
+background: white;
+}
+
+/* footer style here */
+.footer{
+background-color: black;
+position: fixed;
+width: 100%;
+text-align: center;
+height: 46px;
+left: 0;
+bottom: 0;
+color: red;
+}
+
+/* .container{
+  background-color: white;
+  height: 100%;
+  width:100%;
+  position: relative;
+} */
+.row{
+  height: 466px;
+  box-sizing: border-box;
+
+}
+
+.col {
+  float: left;
+  width: 50%;
+  height: 263px;
+  margin: auto;
+  padding: 0 170px;
+  background-color: white;
+  margin-top: 125px;
+}
+
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* vertical line */
+.vl {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  border: 2px solid #7e1405;
+  height: 264px;
+  margin-top: 62px;
+}
+
+/* text inside the vertical line */
+.vl-innertext {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f1f1f1;
+  border: 1px solid #7e1405;
+  border-radius: 50%;
+  padding: 8px 10px;
+}
+
+.login{
+  height: 260px;
+  width: 367px;
+  border: 3px solid darkslategrey;
+  padding: 39px 68px 0px;
+  border-radius: 8px;
+}
+
+input[type=text], input[type=password]{
+width: 260px;
+padding: 9px;
+margin-top: 20px;
+font-size: 15px;
+font-family: sans-serif;
+margin-left: -15px;
+border-radius: 4px;
+border-color: gray;
+}
+
+input[type=text]:hover,input[type=password]:hover{
+border-color:#7e1405;
+}
+
+input[type=submit]{
+  width: 220px;
+  padding: 9px;
+  margin-top: 25px;
+  border-radius: 4px;
+  border: none;
+  background-color:skyblue;
+  color: white;
+  cursor: pointer;
+  font-family: sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+input[type=submit]:hover{
+background-color: #7e1405;;
+opacity: 0.85;
+font-weight: bolder;
+}
+
+.attendence{
+width: 259px;
+margin-left: -14px;
+height: 45px;
+border-color: gray;
+border-radius: 4px;
+margin-top: 22px;
+font-size: 17px;
+font-weight: bold;
+}
+
+.attendence:hover{
+border-color:#7e1405;
+}
+
+
+/*----Header--------*/
+.header{
+  border: 1px solid black;
+  background-color: white;
+  height: 145px;
+  float: none;
+}
+@media screen and (max-width: 500px) {
+  .header b,p {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .header-right {
+    float: none;
+  }
+}

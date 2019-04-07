@@ -1,0 +1,37 @@
+#noticeboard_wrapper{
+  margin-left: 20px 0px 50px 0px;
+  background-color: #fff;
+  border-top: 4px #e7eaec solid;
+}
+#noticeboard_wrapper header{
+  border-bottom: 1px #f3f3f4 solid;
+  padding: 10px 0px;
+}
+.page_title{
+  font-size: 18px;
+  font-weight: bold;
+  padding: 0px 0px 0px 20px;
+  margin: 0px;
+  text-align: center;
+}
+.content-inner{
+  padding: 20px;
+}
+
+
+
+/*------------Css For Description part------*/
+.form-wrapper{
+  background-color: #eee;
+  padding: 20px;
+}
+
+/*----------- CSS for noticelist-------------*/
+#noticelist-wrapper{
+  margin-left: 20px 0px 50px 0px;
+  background-color: #fff;
+}
+#noticelist-wrapper header{
+  border-bottom: 1px #f3f3f4 solid;
+  padding: 10px 0px;
+}
