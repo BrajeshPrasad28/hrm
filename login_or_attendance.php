@@ -47,7 +47,7 @@
 </form>
 </div>
 </div>
-
+<!-- col starts here -->
 <div class="col">
   <div class="login">
 <form action="index.php" method="post">
