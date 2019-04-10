@@ -4,7 +4,7 @@
      <meta charset="utf-8">
      <!-- <meta http-equiv="refresh" content="2"> -->
      <title>Admin_login</title>
-     <link rel="shortcut icon" type="../images/png" href="images/test.svg.png">
+     <link rel="shortcut icon" type="images/png" href="../images/test.svg.png">
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <!-- <script src="bootstrap/jquery.min.js"></script>
      <script src="bootstrap/bootstrap.min.js"></script> -->

@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>Payroll and Attendance Maintenance System</title>
-<link rel="shortcut icon" type="images/png" href="../images/Emblem_of_India.svg">
+<link rel="shortcut icon" type="images/png" href="../images/test.svg.png">
 <!--Drowpdown Box Style-->
 <link rel="stylesheet" href="../css/SelectBox.css">
 <!-- Bootstrap CSS CDN -->

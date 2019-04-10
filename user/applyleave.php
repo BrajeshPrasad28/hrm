@@ -3,12 +3,10 @@
 
 <?php
 
-            $msg = " ";
-
+  $msg = " ";
   if(isset($_POST['submit'])){
-echo "<pre>";
+  echo "<pre>";
     print_r($_POST); die();
-
   }
 
  ?>
@@ -43,7 +41,6 @@ echo "<pre>";
 
 <?php include 'sidebar_and_header.php';?>
 
-
 <div class="cssmenu">
      <ul>
         <li class="active"><a href="#">Apply Leave</a></li>
@@ -52,6 +49,10 @@ echo "<pre>";
      </ul>
 </div>
   <div class="card" style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
+    <header>
+      <h2 class="page_title"><center style="color: teal;">Apply Leave</center></h2>
+    </header><hr>
+
      <form id="leaveform" method="post" name="leaveform">
 
        <div class="row">
@@ -119,7 +120,7 @@ echo "<pre>";
                  <textarea id="description" name="description" placeholder="Write something.." style="height:55px"></textarea>
               </div>
               <div style="padding: 30px; margin-right: 5px; margin-left: 231px;">
-                 <input type="submit" name="submit" value="Apply" id="apply">
+                 <input type="button" class="btn btn-success btn-md" name="submit" value="Apply" id="apply">
               </div>
            </div></form>
          </div>
@@ -131,7 +132,7 @@ echo "<pre>";
                  width: 150px;
                }
                </style>
-               <h4 class="mt-4"> Leave Balance  :-</h4>
+               <center><h4 class="mt-1"> Leave Balance</h4></center>
                 <table class="table leave">
 
                 <?php
@@ -180,8 +181,6 @@ echo "<pre>";
 
                       }
                   ?>
-
-
                 </table>
              </div>
            </div>

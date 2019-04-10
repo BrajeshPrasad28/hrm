@@ -10,7 +10,7 @@
          <!--<div class="images">-->
 
          <div class="text-center" style="margin-top: 58px;">
-           <img src="<?php echo $emp->photo; ?>" alt="Avatar" class="Avatar" style="border-radius: 50%; height: auto; width: 100%; max-width: 100px;"> <br>
+           <img src="<?php echo $emp->photo; ?>"  alt="Avatar" class="Avatar" style="border-radius: 50%; height: 100px; width: 100%; max-width: 100px;"> <br>
            <h3 style="font-size: 20px; margin-top: 10px;"> <?php echo $emp->first_name." ".$emp->last_name; ?></h3>
          </div>
 
@@ -18,7 +18,7 @@
 
       <ul class="list-unstyled components">
          <li><a href="attendance_enquiry.php"><i class="fa fa-calendar"></i>Attendance</a>
-            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-plane"></i>Leave</a>
+             <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-plane"></i>Leave</a>
             <ul class="collapse list-unstyled" id="pageSubmenu">
                <li><a href="applyleave.php"><i class="fa fa-circle-o"></i>Apply Leave</a></li>
                <li><a href="leavehistory.php"><i class="fa fa-circle-o"></i>Leave Histroy</a></li>
