@@ -133,8 +133,9 @@
               <tr><td class="lefttd">Joined On:</td><td><?php echo $emp->created_on; ?></td></tr>
               <tr><td class="lefttd">Name:</td><td><?php echo $emp->first_name; ?>&nbsp;<?php echo $emp->last_name; ?></td></tr>
               <?php
-                    $query=mysqli_query($con,"SELECT * FROM designation where d_id=$emp->d_name") or die(mysqli_error($con));
-                      while($emp1 = mysqli_fetch_object($query)) {
+                  $query=mysqli_query($con,"SELECT * FROM designation where d_id=$emp->d_name") or die(mysqli_error($con));
+                  while($emp1 = mysqli_fetch_object($query))
+                  {
                ?>
               <tr><td class="lefttd">Designation:</td><td><?php echo $emp1->d_name; ?></td></tr>
               <?php
