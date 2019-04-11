@@ -1,5 +1,13 @@
 <?php
  require_once('dbconnection.php');
+
+  //
+  require("user_detail.php");
+
+   if(!isset($_SESSION['emp_id'])){
+     header("location: logout.php");
+   }
+
   $msg = "";
   $msg1 = "";
   if(isset($_POST["submit"]))
@@ -35,8 +43,7 @@
      $uploadOk = 0;
  }
  // Allow certain file formats
- if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
- && $imageFileType != "gif" ) {
+ if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
      echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
      $uploadOk = 0;
  }
@@ -49,7 +56,7 @@
          if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
              // echo "The file ". basename( $_FILES["photo"]["name"]). " has been uploaded.";
 
-               $query=mysqli_query($con,"UPDATE employees SET photo='$target_file' WHERE emp= '$emp->emp_id'") or die(mysqli_error($con));
+               $query=mysqli_query($con,"UPDATE employees SET photo='$target_file' WHERE emp_id ='$emp->emp_id'") or die(mysqli_error($con));
             	if($query)
             	{
             		echo"<script> alert('successfully saved')</script>";
@@ -98,7 +105,7 @@
 
 <body>
 
-<?php include 'sidebar_and_header.php';?>
+<?php include 'sidebar_and_header1.php';?>
 
     <div class="cssmenu">
       <ul>
@@ -123,10 +130,19 @@
           <p class="text-danger text-center" style="padding: 0px 0px 0px;"></p>
             <table cellpadding="0" cellspacing="1px" style="width:100%; height:424px;">
               <tr><td class="lefttd">Employee Id:</td><td><?php echo $emp->emp_id; ?></td></tr>
-              <tr><td class="lefttd"> First Name:</td><td><?php echo $emp->first_name; ?></td></tr>
-              <tr><td class="lefttd">Last Name:</td><td><?php echo $emp->last_name; ?></td></tr>
-              <tr><td class="lefttd">Created On:</td><td><?php echo $emp->created_on; ?></td></tr>
-             <tr><td class="lefttd">Uplode Picture</td><td><input type="file" id="photo" name="photo" /></td></tr>
+              <tr><td class="lefttd">Joined On:</td><td><?php echo $emp->created_on; ?></td></tr>
+              <tr><td class="lefttd">Name:</td><td><?php echo $emp->first_name; ?>&nbsp;<?php echo $emp->last_name; ?></td></tr>
+              <?php
+                    $query=mysqli_query($con,"SELECT * FROM designation where d_id=$emp->d_name") or die(mysqli_error($con));
+
+                      while($emp1 = mysqli_fetch_object($query)) {
+
+               ?>
+              <tr><td class="lefttd">Designation:</td><td><?php echo $emp1->d_name; ?></td></tr>
+              <?php
+            }
+            ?>
+             <tr><td class="lefttd">Uplode Picture</td><td><input type="file" id="photo" name="photo" accept="image/*"></td></tr>
              <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
              <tr><td>&nbsp;</td>
              <td><input type="submit" value="Update" name="submit" class="btn btn-primary" style="margin-top: -112px;">

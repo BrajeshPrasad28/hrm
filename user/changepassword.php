@@ -1,4 +1,28 @@
-<?php include('dbconnection.php');?>
+<?php
+require_once('dbconnection.php');
+
+require("user_detail.php");
+
+ if(!isset($_SESSION['emp_id'])){
+   header("location: logout.php");
+ }
+ $msg = "";
+ $msg1 = "";
+ // echo $donor->email;
+if(isset($_POST['submit'])){
+  $password = $_POST['password'];
+  $c_password = $_POST['c_password'];
+
+    if($password == $c_password){
+      $query = mysqli_query($con,"UPDATE employees SET password='$password' WHERE emp_id ='$emp->emp_id' AND password='$emp->password' ") or die(mysqli_error($con));
+      $_SESSION['password'] = $password;
+      $msg1 = "Password Changed";
+    }else{
+      $msg = "Confirm Password didn't matched with Password";
+    }
+
+}
+ ?>
 
 <!DOCTYPE html>
 <html>
@@ -26,47 +50,44 @@
 
 <body>
 
-<?php include 'sidebar_and_header.php';?>
+<?php include 'sidebar_and_header1.php';?>
 
 
-            <div class="cssmenu">
-                <ul>
-                    <li class="active"><a href="#">Change Password</a></li>
-                    <li><a href="#">Account</a></li>
-                    <li><a href="userpanel.php"><i class="fa fa-home"></i> Home</a></li>
-                </ul>
+      <div class="cssmenu">
+          <ul>
+              <li class="active"><a href="#">Change Password</a></li>
+              <li><a href="#">Account</a></li>
+              <li><a href="userpanel.php"><i class="fa fa-home"></i> Home</a></li>
+          </ul>
+      </div>
+      <div class="card">
+        <div class="container" style="height: 450px;">
+          <div class="header">
+            <h3><center style="font-weight: bolder; margin-top: 15px;"> Change Password</h3></center>
+          </div>
+          <div class="col-sm-4 col-sm-offset-4" style="height:319px; width:350px; margin:auto; margin-top:30px; background-color:white; border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
+            <div class="passchange" style="margin-top: 0px; font-weight: bolder;">
+              <form method="post" style="position: static;margin-bottom: 0px;">
+                <p class="text-danger"><?php echo $msg; ?></p>
+                <p class="text-success"><?php echo $msg1; ?></p>
+                <div class="form-group">
+                  <label for="password"> New Password</label>
+                  <input type="password" class="form-control" name="password" placeholder="Enter New Password">
+                </div>
+                  <div class="form-group">
+                    <label for="c_password">Confirm Password</label>
+                    <input type="password" class="form-control" name="c_password" placeholder="Enter Confirm Password">
+                  </div>
+                    <center><input type="button" class="btn btn-success btn-lg" name="submit" value="Submit" style="margin-top: 30px;"></center>
+              </form>
             </div>
-            <div class="card">
-            <form class="form-horizontal" action="#" method="post">
-              <div class="form-group row">
-               <label class="col-sm-2 control-label">Cuurent Password</label>
-               <div class="col-sm-4">
-                 <input type="password" class="form-control" name="password" value="">
-               </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-2 control-label">New Password</label>
-                <div class="col-sm-4">
-                  <input type="password" class="form-control" name="new_password" value="">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label class="col-sm-2 control-label">Confirm New Password</label>
-                <div class="col-sm-4">
-                  <input type="password" class="form-control" name="confirm_new_password" value="">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-5">
-                   <button type="submit" class="btn btn-success">Change Password</button>
-                </div>
-              </div>
-            </form>
-            </div>
+          </div>
+        </div>
+      </div>
+      <!-- this two divs are belongs to include sidebar_navbar page -->
+      </div>
+      </div>
 
-            <!-- this div is close in other pages -->
-           </div>
-           </div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
