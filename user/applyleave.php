@@ -185,10 +185,7 @@
              </div>
            </div>
          </div>
-
        </div>
-
-
   </div>
       <!-- this  two div's are closed in other pages -->
 </div>

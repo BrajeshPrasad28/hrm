@@ -130,6 +130,7 @@
           <p class="text-danger text-center" style="padding: 0px 0px 0px;"></p>
             <table cellpadding="0" cellspacing="1px" style="width:100%; height:424px;">
               <tr><td class="lefttd">Employee Id:</td><td><?php echo $emp->emp_id; ?></td></tr>
+              <tr><td class="lefttd">Job Type:</td><td><?php echo $emp->job_type; ?></td></tr>
               <tr><td class="lefttd">Joined On:</td><td><?php echo $emp->created_on; ?></td></tr>
               <tr><td class="lefttd">Name:</td><td><?php echo $emp->first_name; ?>&nbsp;<?php echo $emp->last_name; ?></td></tr>
               <?php

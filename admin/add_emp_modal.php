@@ -132,7 +132,7 @@
 
               <div class="col-sm-9">
                 <select class="form-control" name="job_type" id="job_type" required="">
-                  <option value="" selected="">- Select -</option>
+                  <option value="" selected="">- Select Job Type -</option>
 
                         <option value="Parmanent">Parmanent</option>
 
