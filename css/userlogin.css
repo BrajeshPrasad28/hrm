@@ -128,7 +128,7 @@ float: none;
 }
 .wrapper{
   background-color: white;
-  padding: 1px;
+  margin-top: -15px;
 }
 .btnSubmit:hover{
   background-color: green;

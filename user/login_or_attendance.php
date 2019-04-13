@@ -25,9 +25,9 @@
       <div class="wrapper">
          <div class="container login-container">
             <div class="row" style="position: relative;">
-               <div class="col-md-6 login-form">
+               <div class="col-md-6 login-form" style="height: 400px;">
                   <h3 style="color: black;">Login</h3>
-                  <form action="login_process.php" method="post" autocomplete="off">
+                  <form action="login_process.php" method="post" autocomplete="off" style="margin-top: -20px;">
                      <?php
                         if(@$_GET['Empty']==true)
                         {
@@ -62,7 +62,7 @@
                         </div>
                      </div>
                      <div class="form-group">
-                        <a href="logout.php"><input type="submit" class="btnSubmit" name="login" value="Login" /></a>
+                        <a href="logout.php"><input type="submit" class="btnSubmit" name="login" value="Login" style="margin-top: 15px;"></a>
                      </div>
                      <div class="form-group">
                         <a href="#" class="ForgetPwd">Forget Password?</a>
@@ -70,9 +70,9 @@
                   </form>
                </div>
                <h3 class="vl-innertext">OR</h3>
-               <div class="col-md-6 attendence">
+               <div class="col-md-6 attendence" style="height: 400px;">
                   <h3>Attendance</h3>
-                  <form action="attendance_process.php" method="post">
+                  <form action="attendance_process.php" method="post" style="margin-top: -20px;">
                     <?php
                        if(@$_GET['Empty1']==true)
                        {
@@ -124,7 +124,7 @@
                         </div>
                      </div>
                      <div class="form-group">
-                        <input type="submit" class="btnSubmit" name="attend" value="Submit" />
+                        <input type="submit" class="btnSubmit" name="attend" value="Submit" style="margin-top: 15px;">
                      </div>
                   </form>
                </div>
