@@ -2,24 +2,26 @@
    require_once('dbconnection.php');
 
 
-
 $msg = "";
 $msg1 = "";
 if(isset($_POST["submit"]))
+
 {
   //
   // echo "<pre>";
   // print_r($_POST); die();
+
+$emp_id = $_POST['emp_id'];
 $job_type=$_POST['job_type'];
 $first_name=$_post['first_name'];
-$last_name=$_post['last_name']
+$last_name=$_post['last_name'];
 $address=$_POST['address'];
 $phone=$_POST['phone'];
 $email=$_POST['email'];
 $d_name=$_POST['d_name'];
 $schedule_id=$_POST['schedule_id'];
 
- $rs=mysqli_query($con,"UPDATE employees (job_type, first_name, last_name, address, phone, email, d_name, schedule_id) VALUES ('$job_type','$first_name','$last_name','$address','$phone','$email','$d_name','$schedule_id')") or die(mysqli_error());
+ $rs=mysqli_query($con,"UPDATE employees (job_type, first_name, last_name, address, phone, email, d_name, schedule_id) VALUES ('$job_type','$first_name','$last_name','$address','$phone','$email','$d_name','$schedule_id') WHERE emp_id = '$emp_id'") or die(mysqli_error());
  	if($rs)
  	{
  		echo"<script> alert(' Updated successfully')</script>";
@@ -32,6 +34,17 @@ $schedule_id=$_POST['schedule_id'];
 }
 
 ?>
+
+<?php
+   $query = mysqli_query($con, "SELECT emp_id,photo,created_on,job_type,dob,phone,email,address,first_name,last_name,gender,designation.d_name,schedules.time_in,schedules.time_out FROM ((employees inner join designation on employees.d_name=designation.d_id) inner join schedules on schedules.id=employees.schedule_id)");
+ //$query2 = mysqli_query($con, "SELECT * from employees");
+$a = mysqli_fetch_object($query) ;
+// echo "<pre>";
+// print_r($a);
+// die();
+   ?>
+
+
 <!-- The Modal -->
 <div class="container-fluid">
 <div class="modal fade" id="edit_emp_modal">
@@ -59,6 +72,7 @@ $schedule_id=$_POST['schedule_id'];
                      <div class="col-sm-9">
                         <select class="form-control" name="job_type" id="job_type" required="">
                            <option value="" selected=""><?php echo "$a->job_type"; ?></option>
+                           <option value="">- Select -</option>
                            <option value="Parmanent">Parmanent</option>
                            <option value="Contractual">Contractual</option>
                         </select>
@@ -94,7 +108,8 @@ $schedule_id=$_POST['schedule_id'];
                      <label for="gender" class="col-sm-3 control-label">Gender</label>
                      <div class="col-sm-9">
                         <select class="form-control" name="gender" id="gender" required="">
-                           <option value="" selected="">value="<?php echo "$a->gender"; ?>"</option>
+                           <option value="" selected=""><?php echo "$a->gender"; ?></option>
+                           <option value="">- Select -</option>
                            <option value="Male">Male</option>
                            <option value="Female">Female</option>
                         </select>
@@ -105,7 +120,7 @@ $schedule_id=$_POST['schedule_id'];
                   <div class="row">
                      <label for="address" class="col-sm-3 control-label">Address</label>
                      <div class="col-sm-9">
-                        <textarea class="form-control" value="<?php echo "$a->address"; ?>" name="address" id="address"></textarea>
+                        <textarea class="form-control" name="address" id="address"><?php echo "$a->address"; ?></textarea>
                      </div>
                   </div>
                </div>
@@ -131,6 +146,7 @@ $schedule_id=$_POST['schedule_id'];
                      <div class="col-sm-9">
                         <select class="form-control" name="d_name" id="d_name" required="">
                            <option value="" selected=""><?php echo "$a->d_name"; ?></option>
+                           <option value="">- Select -</option>
                            <?php
                               $query=mysqli_query($con,"SELECT * FROM designation") or die(mysqli_error($con));
 
@@ -148,6 +164,7 @@ $schedule_id=$_POST['schedule_id'];
                      <div class="col-sm-9">
                         <select class="form-control" id="schedule_id" name="schedule_id" required="">
                            <option value="" selected=""><?php echo "$a->schedule_id"; ?></option>
+                           <option value="">- Select -</option>
                            <?php
                               $query=mysqli_query($con,"SELECT * FROM schedules") or die(mysqli_error($con));
 
@@ -177,7 +194,7 @@ $schedule_id=$_POST['schedule_id'];
                </div> -->
                <!-- Modal footer -->
                <div class="modal-footer">
-                  <button type="update" name="update" class="btn btn-primary">Update</button>
+                  <button type="update" name="submit" class="btn btn-primary">Update</button>
                </div>
             </form>
          </div>
