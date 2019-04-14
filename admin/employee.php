@@ -70,6 +70,8 @@
       <!-- div of this include page are closed down below which shows extra two div -->
       <?php include 'sidebar_navbar1.php'; ?>
       <?php include 'add_emp_modal.php'; ?>
+
+
       <!-- update page content starts here -->
       <div class="card" style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
          <div class="header mt-2">
@@ -82,7 +84,10 @@
          <hr>
          <div id="noticeboard_wrapper" style="padding: 15px;">
             <ul style="list-style: none" >
-               <li style="float: left; margin-left: -41px;" class="mb-3"><button type="button"  data-toggle="modal" data-target="#add_emp_modal" class="btn btn-primary btn-sm" >+ New</button></li>
+               <li style="float: left; margin-left: -41px;" class="mb-3"><a href="employee.php"><button type="button"  class="btn btn-info btn-sm">All</button></li></a>
+               <li style="float: left; margin-left: -2px;" class="mb-3"><a href="parmanent_emp.php"><button type="button" class="btn btn-info btn-sm">Parmanent</button></li>
+               <li style="float: left; margin-left: 5px;" class="mb-3"><a href="contractual_emp.php"><button type="button"  class="btn btn-info btn-sm" >Contractual</button></li></a>
+               <li style="float: left; margin-left: 5px;" class="mb-3"><button type="button"  data-toggle="modal" data-target="#add_emp_modal" class="btn btn-success btn-sm" >+ New</button></li>
             </ul>
             <div class="content-inner">
                <table id="noticelist" class="table table-stripped table-hover table-bordered">
@@ -94,7 +99,7 @@
                      <th>Gender</th>
                      <th>Position</th>
                      <th>Schedule</th>
-                     <th>Member Since</th>
+                     <th>Joined On</th>
                      <th>Tool</th>
                   </thead>
                   <tbody>
@@ -113,7 +118,7 @@
                           <td><?php echo $a['time_in'].'-'.$a['time_out'];?></td>
                           <td><?php echo $a['created_on']; ?></td>
                           <?php
-                          echo "<td> <form method='post' style='display: inline-block;'> <input type='hidden' name='emp_id' value='".$a['emp_id']."' > <button type='submit' name='disable' style='margin:0px 5px; display:inline-block; float:left;' class='btn btn-secondary btn-sm '>Edit</button></form>  <form  style='display: inline-block;' method='post'>  <input type='hidden' name='emp_id' value='".$a['emp_id']."' > <button  type='submit' name='delete'  style='margin:0px 5px; display:inline-block;  float:left;' class='btn btn-danger btn-sm'>Delete</button> </form> </td>";
+                          echo "<td> <form method='post' style='display: inline-block;'> <input type='hidden' name='emp_id' value='".$a['emp_id']."' > <button type='submit' name='disable' style='margin:0px 5px; display:inline-block; float:left;' class='btn btn-success btn-sm'>Edit</button></form>  <form  style='display: inline-block;' method='post'>  <input type='hidden' name='emp_id' value='".$a['emp_id']."' > <button  type='submit' name='delete'  style='margin:0px 5px; display:inline-block;  float:left;' class='btn btn-danger btn-sm'>Delete</button> </form> </td>";
                           echo " </tr>";
                         }
                         ?>
@@ -125,6 +130,7 @@
       <!-- this two divs are belongs to include sidebar_navbar page -->
       </div>
       </div>
+
       <!-- Jquery For table -->
       <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
       <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
