@@ -38,7 +38,7 @@ $schedule_id=$_POST['schedule_id'];
 <?php
    $query = mysqli_query($con, "SELECT emp_id,photo,created_on,job_type,dob,phone,email,address,first_name,last_name,gender,designation.d_name,schedules.time_in,schedules.time_out FROM ((employees inner join designation on employees.d_name=designation.d_id) inner join schedules on schedules.id=employees.schedule_id)");
  //$query2 = mysqli_query($con, "SELECT * from employees");
-$a = mysqli_fetch_object($query) ;
+$b = mysqli_fetch_object($query) ;
 // echo "<pre>";
 // print_r($a);
 // die();
@@ -62,7 +62,7 @@ $a = mysqli_fetch_object($query) ;
                   <div class="row">
                      <label for="created_on" class="col-sm-3 control-label">Created On</label>
                      <div class="col-sm-9">
-                        <input type="date" value="<?php echo "$a->created_on"; ?>" class="form-control" id="created_on" name="created_on" required="">
+                        <input type="date" value="<?php echo "$b->created_on"; ?>" class="form-control" id="created_on" name="created_on" required="">
                      </div>
                   </div>
                </div>
@@ -71,7 +71,7 @@ $a = mysqli_fetch_object($query) ;
                      <label for="job_type" class="col-sm-3 control-label">Job Type</label>
                      <div class="col-sm-9">
                         <select class="form-control" name="job_type" id="job_type" required="">
-                           <option value="" selected=""><?php echo "$a->job_type"; ?></option>
+                           <option value="" selected=""><?php echo "$b->job_type"; ?></option>
                            <option value="">- Select -</option>
                            <option value="Parmanent">Parmanent</option>
                            <option value="Contractual">Contractual</option>
@@ -83,7 +83,7 @@ $a = mysqli_fetch_object($query) ;
                   <div class="row">
                      <label for="first_name" class="col-sm-3 control-label">First Name</label>
                      <div class="col-sm-9">
-                        <input type="text" value="<?php echo "$a->first_name"; ?>"class="form-control" id="first_name" name="first_name" required="">
+                        <input type="text" value="<?php echo "$b->first_name"; ?>"class="form-control" id="first_name" name="first_name" required="">
                      </div>
                   </div>
                </div>
@@ -91,7 +91,7 @@ $a = mysqli_fetch_object($query) ;
                   <div class="row">
                      <label for="last_name" class="col-sm-3 control-label">Last Name</label>
                      <div class="col-sm-9">
-                        <input type="text" value="<?php echo "$a->last_name"; ?>"class="form-control" id="last_name" name="last_name" required="">
+                        <input type="text" value="<?php echo "$b->last_name"; ?>"class="form-control" id="last_name" name="last_name" required="">
                      </div>
                   </div>
                </div>
@@ -99,7 +99,7 @@ $a = mysqli_fetch_object($query) ;
                   <div class="row">
                      <label for="dob" class="col-sm-3 control-label">Birthdate</label>
                      <div class="col-sm-9">
-                        <input type="date" value="<?php echo "$a->dob"; ?>" class="form-control" id="dob" name="dob">
+                        <input type="date" value="<?php echo "$b->dob"; ?>" class="form-control" id="dob" name="dob">
                      </div>
                   </div>
                </div>
@@ -108,7 +108,7 @@ $a = mysqli_fetch_object($query) ;
                      <label for="gender" class="col-sm-3 control-label">Gender</label>
                      <div class="col-sm-9">
                         <select class="form-control" name="gender" id="gender" required="">
-                           <option value="" selected=""><?php echo "$a->gender"; ?></option>
+                           <option value="" selected=""><?php echo "$b->gender"; ?></option>
                            <option value="">- Select -</option>
                            <option value="Male">Male</option>
                            <option value="Female">Female</option>
@@ -120,7 +120,7 @@ $a = mysqli_fetch_object($query) ;
                   <div class="row">
                      <label for="address" class="col-sm-3 control-label">Address</label>
                      <div class="col-sm-9">
-                        <textarea class="form-control" name="address" id="address"><?php echo "$a->address"; ?></textarea>
+                        <textarea class="form-control" name="address" id="address"><?php echo "$b->address"; ?></textarea>
                      </div>
                   </div>
                </div>
@@ -128,7 +128,7 @@ $a = mysqli_fetch_object($query) ;
                   <div class="row">
                      <label for="phone" class="col-sm-3 control-label">phone</label>
                      <div class="col-sm-9">
-                        <input type="number" value="<?php echo "$a->phone"; ?>" class="form-control" id="phone" name="phone">
+                        <input type="number" value="<?php echo "$b->phone"; ?>" class="form-control" id="phone" name="phone">
                      </div>
                   </div>
                </div>
@@ -136,7 +136,7 @@ $a = mysqli_fetch_object($query) ;
                   <div class="row">
                      <label for="email" class="col-sm-3 control-label">Email</label>
                      <div class="col-sm-9">
-                        <input type="email" value="<?php echo "$a->email"; ?>" class="form-control" id="email" name="email">
+                        <input type="email" value="<?php echo "$b->email"; ?>" class="form-control" id="email" name="email">
                      </div>
                   </div>
                </div>
@@ -145,7 +145,7 @@ $a = mysqli_fetch_object($query) ;
                      <label for="d_name" class="col-sm-3 control-label">Position</label>
                      <div class="col-sm-9">
                         <select class="form-control" name="d_name" id="d_name" required="">
-                           <option value="" selected=""><?php echo "$a->d_name"; ?></option>
+                           <option value="" selected=""><?php echo "$b->d_name"; ?></option>
                            <option value="">- Select -</option>
                            <?php
                               $query=mysqli_query($con,"SELECT * FROM designation") or die(mysqli_error($con));
@@ -163,7 +163,7 @@ $a = mysqli_fetch_object($query) ;
                      <label for="schedule_id" class="col-sm-3 control-label">Schedule</label>
                      <div class="col-sm-9">
                         <select class="form-control" id="schedule_id" name="schedule_id" required="">
-                           <option value="" selected=""><?php echo "$a->schedule_id"; ?></option>
+                           <option value="" selected=""><?php echo "$b->schedule_id"; ?></option>
                            <option value="">- Select -</option>
                            <?php
                               $query=mysqli_query($con,"SELECT * FROM schedules") or die(mysqli_error($con));
@@ -194,7 +194,7 @@ $a = mysqli_fetch_object($query) ;
                </div> -->
                <!-- Modal footer -->
                <div class="modal-footer">
-                  <button type="update" name="submit" class="btn btn-primary">Update</button>
+                  <button type="update" name="submit"  name='emp_id' value='".$b['emp_id']."' class="btn btn-primary">Update</button>
                </div>
             </form>
          </div>
