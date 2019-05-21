@@ -119,7 +119,7 @@
                           <td><?php echo $a['time_in'].'-'.$a['time_out'];?></td>
                           <td><?php echo $a['created_on']; ?></td>
                           <?php
-                          echo "<td><button type='submit' name='emp_id' value='".$a['emp_id']."' data-toggle='modal' data-target='#edit_emp_modal' name='disable' style='margin:0px 5px; display:inline-block; float:left;' class='btn btn-success btn-sm'> Edit </button></form>  <form  style='display: inline-block;' method='post'>  <input type='hidden' name='emp_id' value='".$a['emp_id']."' > <button  type='submit' name='delete'  style='margin:0px 5px; display:inline-block;  float:left;' class='btn btn-danger btn-sm'>Delete</button> </form> </td>";
+                          echo "<td><button type='submit' name='emp_id' value='".$a['emp_id']."' data-toggle='modal' data-target='#edit_emp_modal' name='disable' style='margin:0px 5px; display:inline-block; float:left;' class='btn btn-success btn-sm'> Edit </button> <form  style='display: inline-block;' method='post'>  <input type='hidden' name='emp_id' value='".$a['emp_id']."' > <button  type='submit' name='delete'  style='margin:0px 5px; display:inline-block;  float:left;' class='btn btn-danger btn-sm'>Delete</button> </form> </td>";
                           echo " </tr>";
                           }
                           ?>

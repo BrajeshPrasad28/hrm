@@ -36,7 +36,7 @@ $schedule_id=$_POST['schedule_id'];
 ?>
 
 <?php
-   $query = mysqli_query($con, "SELECT emp_id,photo,created_on,job_type,dob,phone,email,address,first_name,last_name,gender,designation.d_name,schedules.time_in,schedules.time_out FROM ((employees inner join designation on employees.d_name=designation.d_id) inner join schedules on schedules.id=employees.schedule_id)");
+   $query = mysqli_query($con, "SELECT emp_id,photo,created_on,job_type,dob,phone,email,address,first_name,last_name,gender,designation.d_name,schedules.time_in,schedules.time_out FROM ((employees inner join designation on employees.d_name=designation.d_id) inner join schedules on schedules.id=employees.schedule_id) ");
  //$query2 = mysqli_query($con, "SELECT * from employees");
 $b = mysqli_fetch_object($query) ;
 // echo "<pre>";
