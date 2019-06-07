@@ -103,9 +103,9 @@
     <div class="modal-content">
 
       <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Add New Employee</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <div class="modal-header" style="background:black;">
+        <h4 class="modal-title" style="color:white;">Add New Employee</h4>
+        <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
       </div>
 
       <!-- Modal body -->
@@ -281,6 +281,7 @@
 
       <!-- Modal footer -->
       <div class="modal-footer">
+        <button type="button"  class="btn btn-danger" data-dismiss="modal" style="color:white;">Close</button>
         <button type="submit" name="submit" class="btn btn-primary">Save</button>
       </div>
     </form>

@@ -74,6 +74,7 @@
 
 
 
+
 <!-- update page content starts here -->
 <div class="card" style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
    <div class="header mt-2">
@@ -102,7 +103,8 @@
                <th>Position</th>
                <th>Schedule</th>
                <th>Joined On</th>
-               <th>Tool</th>
+               <th>Attendance</th>
+                <th>Tool</th>
             </thead>
             <tbody>
                <?php
@@ -119,8 +121,19 @@
                     <td><?php echo $a['d_name']; ?></td>
                     <td><?php echo $a['time_in'].'-'.$a['time_out'];?></td>
                     <td><?php echo $a['created_on']; ?></td>
+                    <td class="text-center">
+                        <button type='button' name='viewM' id='<?php echo $a['emp_id']; ?>' style='display:inline-block;' class='btn btn-secondary btn-sm mb-1 viewMonth' data-toggle="modal" data-target="#viewAttendanceMonth">
+                          MonthWise
+                        </button>
+                        <button type='button' name='viewY' id='<?php echo $a['emp_id']; ?>' style='display:inline-block; width:95px;' class='btn btn-secondary btn-sm viewYear' data-toggle="modal" data-target="#viewAttendanceYear">
+                          YearWise
+                        </button>
+                    </td>
                     <?php
-                    echo "<td><button type='update' name='emp_id' value='".$a['emp_id']."' data-toggle='modal' data-target='#edit_emp_modal' name='disable' style='margin:0px 5px; display:inline-block; float:left;' class='btn btn-success btn-sm'> Edit </button></form>  <form  style='display: inline-block;' method='post'>  <input type='hidden' name='emp_id' value='".$a['emp_id']."' > <button  type='submit' name='delete'  style='margin:0px 5px; display:inline-block;  float:left;' class='btn btn-danger btn-sm'>Delete</button> </form> </td>";
+                    echo "<td><button type='update' name='emp_id' value='".$a['emp_id']."' data-toggle='modal' data-target='#edit_emp_modal' name='disable'  style='margin:0px 5px; display:inline-block; float:left; width: 62px;' class='btn btn-success btn-sm mb-1'> Edit </button>
+                    <form  style='display: inline-block;' method='post'>
+                    <input type='hidden' name='emp_id' value='".$a['emp_id']."' >
+                    <button  type='submit' name='delete'   style='margin:0px 5px; display:inline-block;  float:left;' class='btn btn-danger btn-sm'>Delete</button> </form> </td>";
                     echo " </tr>";
                     }
                     ?>
@@ -133,9 +146,62 @@
 </div>
 </div>
 
+<!-- The Modal For MonthWise -->
+<div class="modal fade" id="viewAttendanceMonth">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: teal; text-align: center;">Monthwise Attendace</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body" id="month_Wise">
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- The Modal for YearWise -->
+<div class="modal fade" id="viewAttendanceYear">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: teal;">Yearwise Attendance</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body" id='year_wise'>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Part Ends Here -->
 <!-- Jquery For table -->
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
+
 <!-- script for table -->
 <script>
    $(document).ready(function(){
@@ -146,10 +212,51 @@
        });
      });
 
-     $('#noticelist').DataTable();
-
+     $('#noticelist').DataTable({
+       "scrollY":        "300px",
+       "scrollCollapse": true,
+     });
    });
 </script>
 <!-- table script ends here -->
+
+<!-- Ajax for MonthWise data -->
+<script>
+$(document).on('click', '.viewMonth', function() {
+    var id = $(this).attr("id");
+    if (id != '') {
+        $.ajax({
+            url: "viewAttendanceMonth.php",
+            method: "POST",
+            data: {
+                id: id
+            },
+            success: function(data) {
+                $('#month_Wise').html(data);
+                $('#dataModal').modal('show');
+            }
+        });
+    }
+});
+</script>
+<!-- Ajax for YearWise data -->
+<script>
+$(document).on('click', '.viewYear', function() {
+  var id = $(this).attr("id");
+  if (id != '') {
+      $.ajax({
+          url: "viewAttendanceYear.php",
+          method: "POST",
+          data: {
+              id: id
+          },
+          success: function(data) {
+              $('#year_wise').html(data);
+              $('#dataModal').modal('show');
+          }
+      });
+  }
+});
+</script>
 </body>
 </html>

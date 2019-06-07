@@ -1,36 +1,9 @@
-<?php include('dbconnection.php');?>
+<?php
 
-<!-- This sidebar and header is for noticeboard and leavehistory -->
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  include('DBconnection.php');
 
-    <title>Payroll and Attendance Maintenance System</title>
-    <link rel="shortcut icon" type="images/png" href="../images/test.svg.png">
-
-    <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../css/userstyle.css">
-    <!-- Css for Tables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Table Heeader Style-->
-
-</head>
-
-<body>
-
-<?php include 'sidebar_and_header.php';?>
-
-
-
+?>
+<?php include 'sidebar_and_header1.php';?>
             <div class="cssmenu">
                 <ul>
                     <li class="active"><a href="#">Notice Board</a></li>
@@ -47,7 +20,7 @@
                     </div>-->
                     <div class="content-inner">
                       <div id="notice">
-                        <table id="leavehistory" class="table table-hover table-stripped" name="leavehistory">
+                        <table id="leavehistory" class="table table-stripped" name="leavehistory">
                            <thead class="table-dark">
                                <tr>
                                    <th>Date</th>
@@ -58,7 +31,7 @@
                            </thead>
                            <tbody>
                              <?php
-                               $q = "select * from noticeboard where status='Active'";
+                                 $q = "SELECT* from noticeboard where status='Active'";
                                $query = mysqli_query($con,$q);
 
                                if($query){
@@ -82,8 +55,6 @@
 
               </div>
           </div>
-          <!-- this dev is close in other pages.. -->
-
         </div>
     </div>
 

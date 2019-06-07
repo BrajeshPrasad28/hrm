@@ -1,24 +1,28 @@
 <?php
- require_once('dbconnection.php');
- session_start();
+require_once('dbconnection.php');
+session_start();
+if(isset($_POST['login']))
+  {
+    if(empty($_POST['username']) || empty($_POST['password']))
+    {
+      header("location:index.php?Empty= Please Fill in the Blanks");
+    }
+    else
+    {
+       $query="SELECT * FROM employees WHERE emp_id='".$_POST['username']."' AND password='".$_POST['password']."'";
+       $result=mysqli_query($con,$query);
 
- $msg = "";
-if(isset($_POST['login'])){
-  // echo "<pre>";
-  // print_r($_POST);
-  // die();
-  $emp_id = trim($_POST['emp_id']);
-  $password = trim($_POST['password']);
-
-  $query = mysqli_query($con, "SELECT * FROM employees WHERE emp_id='$emp_id' AND password='$password' ");
-  $a = mysqli_num_rows($query);
-  if($a > 0 ){
-    echo "<script>alert('Entered Query');</script>";
-        $_SESSION['emp_id'] = $emp_id;
-            $_SESSION['password'] = $password;
-        header("Location: userpanel.php");
-  }else {
-    $msg =  "Employee id or Password Didn't Matched";
+       if(mysqli_fetch_assoc($result))
+       {
+         $_SESSION['User']=$_POST['username'];
+         header("location:userpanel.php");
+       }
+       else {
+         header("location:index.php?Empty= Incorrect Username or Password");
+       }
+    }
   }
-}
+  else {
+    echo "Not Working";
+  }
  ?>

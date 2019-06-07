@@ -14,7 +14,7 @@
 
    <body onload=display_ct();>
      <div class="header">
-       <img src="..\images\test.svg.png" alt="header_picture" style="height: 119px; width: 81px; margin-top: 3px; margin-bottom: 3px; margin-left: 26px;">
+       <img src="..\images\test.svg.png" alt="header_picture" style="height: 119px; width: 81px; margin-top: 3px; margin-bottom: 15px; margin-left: 26px;">
        <b style="font-size:28px; margin-left: 342px;">HUMAN RESOURCE MANAGEMENT</b>
       <!-- <h2><strong><center>HUMAN RESOURCE MANAGEMENT</center></strong></h2> -->
        <div class="login-logo" style="margin-left:85%; font-size:19px; font-weight:bold; margin-top:-102px;">

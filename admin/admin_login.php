@@ -4,7 +4,7 @@
      <meta charset="utf-8">
      <!-- <meta http-equiv="refresh" content="2"> -->
      <title>Admin_login</title>
-     <link rel="shortcut icon" type="images/png" href="../images/test.svg.png">
+     <link rel="shortcut icon" type="../images/png" href="images/test.svg.png">
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <!-- <script src="bootstrap/jquery.min.js"></script>
      <script src="bootstrap/bootstrap.min.js"></script> -->
@@ -46,7 +46,7 @@
  <footer>
    <div class="footer">
      <br>
-     <p style="font-weight:bolder; background-color: black; color:white; margin-top: -22px;">DEVELOP AND DESIGN BY PRANJAL BASUMATARY</p>
+     <p style="font-weight:bolder; background-color: black; color:white; margin-top: -22px;">DEVELOP AND DESIGN BY BRAJESH PRASAD</p>
        <p style="font-weight: bolder; margin-top: -20px;">&copy2018 all right reserved</p>
        </footer>
    <!--footer ENDS here--->

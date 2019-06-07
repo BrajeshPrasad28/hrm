@@ -1,54 +1,19 @@
-<?php include('dbconnection.php'); ?>
+<?php
+  include 'DBconnection.php';
+  include 'sidebar_and_header1.php';
+  $emp_id=$_SESSION['User'];
 
-<!-- This sidebar and header is for noticeboard and leavehistory -->
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <title>Payroll and Attendance Maintenance System</title>
-    <link rel="shortcut icon" type="images/png" href="../images/test.svg.png">
-
-    <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../css/userstyle.css">
-    <!-- Css for Tables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Table Heeader Style-->
-
-</head>
-
-<style>
-  tr:hover{
-    background-color: #1C2833;
+ ?>
+ <style media="screen">
+  /* Automatic Serial Number Row */
+  .css-serial {
+  counter-reset: serial-number; /* Set the serial number counter to 0 */
   }
-  .content-inner{
-    padding: 20px;
+  .css-serial td:first-child:before {
+  counter-increment: serial-number; /* Increment the serial number counter */
+  content: counter(serial-number); /* Display the counter */
   }
-  select:hover{
-     box-shadow:4px 1px 20px lightblue;
-  }
-  input:hover{
-     box-shadow:4px 1px 20px lightblue;
-  }
-  header{
-    text-align: center;
-    color: teal;
-    font-weight: bold;
-  }
-</style>
-
-<body>
-
-<?php include 'sidebar_and_header.php';?>
-
+ </style>
             <div class="cssmenu">
                 <ul>
                     <li class="active"><a href="#">Leave History</a></li>
@@ -65,57 +30,76 @@
                         <input id="myInput" type="text" placeholder="Search...." style="width: 18%;float: right; margin-top: -2%;">
                     </div>-->
                     <div class="content-inner">
-                      <table id="leavehistory" class="table table-hover table-stripped" name="leavehistory">
+                      <table id="leavehistory" class="table table-stripped css-serial" name="leavehistory">
                          <thead class="table-dark">
                              <tr>
                                  <th>#</th>
-                                 <th width="120">Leave Type</th>
+                                 <th>Leave Type</th>
+                                 <th>Posting Date</th>
                                  <th>From</th>
                                  <th>To</th>
-                                  <th>Description</th>
-                                  <th width="120">Request Date</th>
-                                 <th width="200">Admin Remark</th>
+                                 <th>Description</th>
                                  <th>Status</th>
                              </tr>
                          </thead>
+                         <?php
+                          $sql = "SELECT * FROM emp_leave where emp_id='$emp_id' ORDER BY leave_id";
+                          $result = mysqli_query($con,$sql);
+                          ?>
                          <tbody>
+                           <?php
+                             while($row = mysqli_fetch_array($result))
+                             {
+                            ?>
                            <tr>
-                             <td>1</td>
-                             <td>Casual</td>
-                             <td>01/02/2019</td>
-                             <td>05/03/2019</td>
-                             <td>Bla Bla Bla</td>
-                             <td>15/01/2019</td>
-                             <td>Bla Bla Bla Holiday ffdsfsdfds dsf dfdsf sf asd faddffsdf  fdsfdasf  fadsfd safasdf fadsf   dfsdasf   dsf dsaf  dsfsdf  fdsffdsd df</td>
-                             <td style="color: green;">Approved</td>
+                             <td></td>
+                             <td>
+                               <?php
+                               if($row['leave_id']==1){
+                                 echo "Emergency Leave";
+                               }elseif($row['leave_id']==2){
+                                 echo "Medical Leave";
+                               }elseif($row['leave_id']==3){
+                                 echo "Pregnancy Leave";
+                               }elseif($row['leave_id']==4){
+                                 echo "Educational Leave";
+                               }elseif($row['leave_id']==5){
+                                 echo "Casual Leave";
+                               }
+                               ?>
+                             </td>
+                             <td><?php echo $row['posting_date']; ?></td>
+                             <td><?php echo $row['from_date']; ?></td>
+                             <td><?php echo $row['to_date']; ?></td>
+                             <td><?php echo $row['leave_description']; ?></td>
+                             <?php
+                              if($row['status']==1){
+                              ?>
+                             <td style="color: green;">
+                               <?php
+                                echo "Approved";
+                                ?>
+                             </td>
+                           <?php } ?>
+                           <?php
+                            if($row['status']==0){
+                            ?>
+                           <td style="color: grey;">
+                             <?php
+                              echo "Pending";
+                              ?>
+                           </td>
+                         <?php } ?>
                            </tr>
-                           <tr>
-                             <td>2</td>
-                             <td>Medical</td>
-                             <td>01/02/2019</td>
-                             <td>05/03/2019</td>
-                             <td>Bla Bla Bla</td>
-                             <td>15/01/2019</td>
-                             <td>Bla Bla Bla Holiday  ffdsfsdfds dsf dfdsf sf asd faddffsdf  fdsfdasf  fadsfd safasdf fadsf   dfsdasf   dsf dsaf  dsfsdf  fdsffdsd df</td>
-                             <td style="color: green;">Approved</td>
-                           </tr>
-                           <tr>
-                             <td>3</td>
-                             <td>Restricted Holiday</td>
-                             <td>01/02/2019</td>
-                             <td>05/03/2019</td>
-                             <td>Bla Bla Bla</td>
-                             <td>15/01/2019</td>
-                             <td>Bla Bla Bla Holiday  ffdsfsdfds dsf dfdsf sf asd faddffsdf  fdsfdasf  fadsfd safasdf fadsf   dfsdasf   dsf dsaf  dsfsdf  fdsffdsd df</td>
-                             <td style="color: green;">Approved</td>
-                           </tr>
+                           <?php
+                              }
+                            ?>
                          </tbody>
                        </table>
                     </div>
 
               </div>
           </div>
-<!-- this dev is close in other pages.. -->
         </div>
     </div>
 
@@ -136,11 +120,11 @@
     <!-- Jquery For table -->
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <!-- JavaScript -->
+    <!-- JavaScript for table-->
     <script type="text/javascript">
       $(document).ready(function() {
       $('#leavehistory').DataTable( {
-          "scrollY":        "300px",
+          "scrollY":        "250px",
           "scrollCollapse": true,
           //"paging":         false
       } );

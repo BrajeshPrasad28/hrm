@@ -95,7 +95,7 @@
                 </thead>
                 <tbody>
               <?php
-                    $query = mysqli_query($con, "SELECT * FROM noticeboard");
+                    $query = mysqli_query($con, "SELECT * FROM emp_leave ");
 //                    $query = mysqli_query($con, "SELECT * FROM noticeboard where status='active'");
 
                     while ($a = mysqli_fetch_array($query)) {

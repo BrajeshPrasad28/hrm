@@ -13,7 +13,7 @@ color: #333;
 }
 .attendence{
 padding: 5%;
-background: #0062cc;
+background: darkblue;
 box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
 }
 .attendence h3{
@@ -114,8 +114,6 @@ background-color: #071833;
 color: white;
 text-align: center;
 }
-
-
 @media screen and (max-width: 500px) {
 .footer h5 {
 float: none;
@@ -128,7 +126,7 @@ float: none;
 }
 .wrapper{
   background-color: white;
-  margin-top: -15px;
+  padding: 1px;
 }
 .btnSubmit:hover{
   background-color: green;
