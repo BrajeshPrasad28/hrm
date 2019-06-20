@@ -1,6 +1,5 @@
 <?php
 require_once('dbconnection.php');
-session_start();
 if(isset($_POST['month_year_wise']))
   {
     $my_wise = $_POST['my_wise'];

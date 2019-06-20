@@ -20,6 +20,11 @@
      $sql = "SELECT DISTINCT date FROM attendance WHERE  date BETWEEN '$sdate' AND '$edate' AND emp_id='$emp_id'";
      $result = mysqli_query($con,$sql);
      $date = array();
+     $sql1 = mysqli_query($con,"SELECT first_name,last_name,job_type FROM employees WHERE emp_id = '$emp_id'");
+     while ($row1 = mysqli_fetch_array($sql1)) {
+        $name = $row1['first_name']." ".$row1['last_name'];
+        $job_status = $row1['job_type'];
+     }
    ?>
 <?php
    $months  = array("","January","February","March","April","May","June","July","August","September","October","November","December");
@@ -28,6 +33,10 @@
    <div class="month_Wise mt-3 ml-3 mr-3 mb-3">
    <div id='month_Wise'>
      <center><strong style="font-size: 20px"><?php echo $months[$month]."   ".$year; ?></strong></center>
+     <div class="row ml-4">
+       <p style="color: black;"><strong style="font-weight: bold;">Name:&nbsp;</strong><?php echo $name.", "; ?>&nbsp;</p>
+       <p style="color: black;"><strong style="font-weight: bold;">Job Status:&nbsp;</strong><?php echo $job_status; ?></p>
+     </div>
   <div class="content-inner">
     <!-- Php Test Area -->
     <?php

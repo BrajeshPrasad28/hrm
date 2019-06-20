@@ -55,14 +55,15 @@
 // PHP code to illustrate the working
 // of md5(), sha1() and hash()
 
-  $str = 'Password';
+  $str = 'pranjal1';
+  $md =  hash('gost',md5($str));echo "test: [".$md."]"; echo date('m');
   $salt = 'Username20Jun96';
   echo sprintf("<br>The md5 hashed password of %s is: %s\n",
   								$str, md5($str.$salt));
   echo sprintf("<br>The sha1 hashed password of %s is: %s\n",
   								$str, sha1($str.$salt));
-  echo sprintf("<br>The gost hashed password of %s is: %s\n",
-  						$str, hash('gost', $str));
+  // echo sprintf("<br>The gost hashed password of %s is: %s\n",
+  // 						$str, hash('gost', $md));
   // if((hash('gost', $str))==(hash('gost', $myPass))){
   //   echo "<br><br>Equal";
   // }

@@ -1,31 +1,6 @@
 <?php
  require_once('dbconnection.php');
-
  require("admin_detail.php");
-
- if(isset($_POST['disable'])){
-   $id = $_POST['id'];
-    $query = mysqli_query($con,"UPDATE noticeboard SET status='disable' WHERE id = '$id'");
-    if($query){
-        echo "<script> alert('Disabled Successfully')</script>";
-    }else{
-      echo "Not Updated, reason: ".mysqli_error($con);
-    }
-  }
-
-  if(isset($_POST['delete'])){
-    $id = $_POST['id'];
-
-     echo "<script> alert('Are you sure you want to delete this post?')</script>";
-
-     $query = mysqli_query($con,"DELETE FROM noticeboard WHERE id = '$id' AND status='disable'");
-     if($query){
-         echo "<script> alert('Post Deleted Successfully')</script>";
-     }else{
-       echo "Not Updated, reason: ".mysqli_error($con);
-     }
-   }
-
  ?>
 
 
@@ -38,17 +13,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" type="images/png" href="../images/test.svg.png">
 
-    <title>Noticeboard</title>
+    <title>Noticeboard list</title>
 
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/adminstyle.css">
     <!--Style for noticeboard-->
     <link rel="stylesheet" href="css/adminstyle2.css">
 
    <!-- Css for Tables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
     <!-- Font Awesome JS -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -56,9 +31,6 @@
 
     <!-- style is here -->
     <style media="screen">
-      tr:hover{
-    background-color: #1C2833;
-      }
     select:hover{
     box-shadow: 4px 1px 20px lightblue;
     border-radius: 5px;
@@ -83,16 +55,24 @@
 
     <!-- div of this include page are closed down below which shows extra two div -->
       <?php include 'sidebar_navbar1.php'; ?>
+      <!-- BreadCrumbs starts here -->
+      <div class="cssmenu">
+           <ul>
+             <li class="active"> <a href="#"><i class="fa fa-list"></i>&nbsp; Notice History</a></li>
+             <li> <a href="adminpanel.php"><i class="fa fa-home"></i>&nbsp; Home</a></li>
+           </ul>
+        </div>
+      <!-- BreadCrumbs ends here -->
 
     <!-- update page content starts here -->
 
           <div id="noticeboard_wrapper" style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
             <header>
-              <h2 class="page_title">Create New Notice</h2>
+              <h2 style="color: teal; text-align: center;">Notice History</h2>
             </header>
             <div class="content-inner">
               <table id="noticelist" class="table table-stripped table-hover table-bordered">
-                <thead class="table-dark">
+                <thead style="background-color: #660066; color: white; font-weight: bold;">
                   <!-- <th>Id</th> -->
                   <th>Date</th>
                   <th>Title</th>
@@ -103,22 +83,27 @@
                 <tbody>
               <?php
                     $query = mysqli_query($con, "SELECT * FROM noticeboard");
-//                    $query = mysqli_query($con, "SELECT * FROM noticeboard where status='active'");
-
                     while ($a = mysqli_fetch_array($query)) {
-                    echo "<tr>";
-                    // echo "<td>".$a['id']."</td>";
-                    echo "<td>".$a['date']."</td>";
-                    echo "<td>".$a['title']."</td>";
-                    echo "<td>".$a['message']."</td>";
-                    if($a['status']== 'Active'){
-                      echo "<td style='color: green'>".$a['status']."</td>";
-                    }
-                    else {
-                      echo "<td Style='color: grey'>".$a['status']."</td>";
-                    }
-                    echo "<td> <form method='post' style='display: inline-block;'> <input type='hidden' name='id' value='".$a['id']."' > <button type='submit' name='disable' style='margin:0px 5px; display:inline-block; float:left;' class='btn btn-secondary'>Disable</button>  </form>  <form  style='display: inline-block;' method='post'>  <input type='hidden' name='id' value='".$a['id']."' > <button  type='submit' name='delete'  style='margin:0px 5px; display:inline-block;  float:left;' class='btn btn-danger'>Delete</button>  </form> </td>";
-                    echo "  </tr>";
+                    ?>
+                    <tr>
+                      <td><?php echo $a['date'];?></td>
+                      <td><?php echo $a['title']; ?></td>
+                      <td><?php echo $a['message']; ?></td>
+                      <?php
+                      if($a['status']== 'Active'){
+                        ?>
+                        <td style='color: green'><?php echo $a['status']; ?></td>
+                        <?php
+                      }
+                      else {?>
+                         <td Style='color: grey'><?php echo $a['status']; ?></td>
+                        <?php
+                      }?>
+                    <td>
+                      <input type="button" data-id="<?php echo $a['id'] ?>" style='margin:0px 5px; display:inline-block;' class="btn btn-danger btn-sm disable_btn" value="Disable">
+                    </td>
+                   </tr>
+                    <?php
                     }
                 ?>
                 </tbody>
@@ -130,8 +115,29 @@
       </div>
 
 <!-- Jquery For table -->
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/jquery.dataTables.min.js"></script>
+<script>
+   $(document).on('click', '.disable_btn', function() {
+       var id = $(this).data("id");
+       if (confirm("Are you sure you want to delete?")) {
+           $.ajax({
+               url: "notice_disable.php",
+               type: "POST",
+               data: {
+                   id: id
+               },
+               dataType: "text",
+               success: function(data) {
+                   alert(data);
+                   location.reload();
+               }
+
+           });
+       }
+       return false;
+   });
+</script>
 <script type="text/javascript">
 $(document).ready(function() {
   $('#noticelist').DataTable();

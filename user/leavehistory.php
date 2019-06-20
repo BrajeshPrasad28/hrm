@@ -1,19 +1,19 @@
-<?php
-  include 'DBconnection.php';
-  include 'sidebar_and_header1.php';
-  $emp_id=$_SESSION['User'];
-
+ <?php
+    include('dbconnection.php');
+    session_start();
+    if(!isset($_SESSION['User'])){
+      header('location: index.php');
+    }
+    $emp_id=$_SESSION['User'];
  ?>
- <style media="screen">
-  /* Automatic Serial Number Row */
-  .css-serial {
-  counter-reset: serial-number; /* Set the serial number counter to 0 */
-  }
-  .css-serial td:first-child:before {
-  counter-increment: serial-number; /* Increment the serial number counter */
-  content: counter(serial-number); /* Display the counter */
-  }
- </style>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Payroll and Attendance Maintenance System</title>
+        <?php include 'header1.php';?>
+    </head>
+    <body>
+    <?php include 'sidebar.php';?>
             <div class="cssmenu">
                 <ul>
                     <li class="active"><a href="#">Leave History</a></li>
@@ -30,8 +30,8 @@
                         <input id="myInput" type="text" placeholder="Search...." style="width: 18%;float: right; margin-top: -2%;">
                     </div>-->
                     <div class="content-inner">
-                      <table id="leavehistory" class="table table-stripped css-serial" name="leavehistory">
-                         <thead class="table-dark">
+                      <table id="leavehistory" class="table table-stripped css-serial table-bordered order-column" name="leavehistory">
+                         <thead style="background-color: #660066; color: white;">
                              <tr>
                                  <th>#</th>
                                  <th>Leave Type</th>
@@ -40,10 +40,12 @@
                                  <th>To</th>
                                  <th>Description</th>
                                  <th>Status</th>
+                                 <th>Remarks</th>
+                                 <th>Approval Date</th>
                              </tr>
                          </thead>
                          <?php
-                          $sql = "SELECT * FROM emp_leave where emp_id='$emp_id' ORDER BY leave_id";
+                          $sql = "SELECT *FROM emp_leave where emp_id='$emp_id' ORDER BY posting_date";
                           $result = mysqli_query($con,$sql);
                           ?>
                          <tbody>
@@ -60,7 +62,7 @@
                                }elseif($row['leave_id']==2){
                                  echo "Medical Leave";
                                }elseif($row['leave_id']==3){
-                                 echo "Pregnancy Leave";
+                                 echo "Maternity Leave";
                                }elseif($row['leave_id']==4){
                                  echo "Educational Leave";
                                }elseif($row['leave_id']==5){
@@ -90,6 +92,17 @@
                               ?>
                            </td>
                          <?php } ?>
+                         <?php
+                          if($row['status']==2){
+                          ?>
+                         <td style="color: red;">
+                           <?php
+                            echo "Rejected";
+                            ?>
+                         </td>
+                       <?php } ?>
+                         <td><?php echo $row['remarks']; ?></td>
+                         <td><?php echo $row['apprv_or_rejct_date']; ?></td>
                            </tr>
                            <?php
                               }
@@ -104,11 +117,12 @@
     </div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- <script src="../js/jquery-3.3.1.slim.min.js"></script> -->
+        <script src="../js/jquery-3.3.1.min.js"></script>
     <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="../js/popper.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="../js/bootstrap.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -118,19 +132,14 @@
         });
     </script>
     <!-- Jquery For table -->
-    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
     <!-- JavaScript for table-->
     <script type="text/javascript">
-      $(document).ready(function() {
       $('#leavehistory').DataTable( {
           "scrollY":        "250px",
           "scrollCollapse": true,
-          //"paging":         false
-      } );
+          "orderClasses": true
       } );
     </script>
-
 </body>
-
 </html>

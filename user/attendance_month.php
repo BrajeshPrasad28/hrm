@@ -1,8 +1,18 @@
 <?php
-   include('dbconnection.php');
-
-   ?>
-<?php include 'sidebar_and_header1.php';?>
+   include('DBconnection.php');
+   session_start();
+   if(!isset($_SESSION['User'])){
+     header('location: index.php');
+   }
+?>
+   <!DOCTYPE html>
+   <html>
+   <head>
+       <title>Payroll and Attendance Maintenance System</title>
+       <?php include 'header1.php';?>
+   </head>
+   <body>
+   <?php include 'sidebar.php';?>
 <div class="cssmenu">
    <ul>
       <li class="active"><a href="attendance_enquiry.php">Attendance</a></li>
@@ -38,7 +48,7 @@
                      }
                      ?>
                </select>
-               <button type="submit" class="btn btn-primary" name="submit" id='submit' style="margin-left: 90px;">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+               <button type="submit" class="btn btn-primary" name="submit" id='submit' style="margin-left: 95px;">Search <i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
          </div>
       </div>
@@ -63,6 +73,11 @@
            $sql = "SELECT DISTINCT date FROM attendance WHERE  date BETWEEN '$sdate' AND '$edate' AND emp_id='$emp_id'";
            $result = mysqli_query($con,$sql);
            $date = array();
+           $sql1 = mysqli_query($con,"SELECT first_name,last_name,job_type FROM employees WHERE emp_id = '$emp_id'");
+           while ($row1 = mysqli_fetch_array($sql1)) {
+              $name = $row1['first_name']." ".$row1['last_name'];
+              $job_status = $row1['job_type'];
+           }
          ?>
       <?php
          $months  = array("","January","February","March","April","May","June","July","August","September","October","November","December");
@@ -71,6 +86,10 @@
          <div class="month_Wise mt-3 ml-3 mr-3 mb-3">
          <div id='month_Wise'>
            <center><strong style="font-size: 20px"><?php echo $months[$month]."   ".$year; ?></strong></center>
+           <div class="row ml-4">
+             <p style="color: black;"><strong style="font-weight: bold;">Name:&nbsp;</strong><?php echo $name.", "; ?>&nbsp;</p>
+             <p style="color: black;"><strong style="font-weight: bold;">Job Status:&nbsp;</strong><?php echo $job_status; ?></p>
+           </div>
         <div class="content-inner">
           <!-- Php Test Area -->
           <?php
@@ -260,7 +279,7 @@
         </div>
          </div>
 
-           <div id="editor"></div>
+           <!-- <div id="editor"></div> -->
            <button type="button" class="btn btn-secondary ml-5 mb-3" onclick="printDiv('month_Wise')"><i class="fa fa-file-pdf-o"></i> Print</button>
            <?php
             }
@@ -272,13 +291,11 @@
 </div>
 </div>
 <!-- jQuery CDN - Slim version  -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="../js/jquery-3.3.1.slim.min.js"></script>
 <!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="../js/popper.min.js"></script>
 <!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<!-- CDN link for PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+<script src="../js/bootstrap.min.js" ></script>
 <!-- Jquery For table -->
 <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> -->
 <!-- <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script> -->

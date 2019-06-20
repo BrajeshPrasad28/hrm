@@ -1,7 +1,8 @@
 
 <?php
  require_once('dbconnection.php');
-
+ date_default_timezone_set('Asia/Kolkata');
+ $date = date('Y-m-d');
   $msg = "";
   $msg1 = "";
   if(isset($_POST["submit"]))
@@ -9,7 +10,7 @@
     //
     // echo "<pre>";
     // print_r($_POST); die();
-  $created_on=$_POST["created_on"];
+  $created_on=$date;
   $job_type=$_POST["job_type"];
   $first_name=$_POST["first_name"];
   $last_name=$_POST["last_name"];
@@ -20,7 +21,9 @@
   $email=$_POST["email"];
   $d_name=$_POST["d_name"];
   $schedule_id=$_POST["schedule_id"];
-  $password=$_POST["password"];
+  $password= hash('gost',md5($_POST["password"]));
+  $status = 'Unpaid';
+  $role= 'employee';
 
   //
   $letters = '';
@@ -75,14 +78,10 @@
           if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
               // echo "The file ". basename( $_FILES["photo"]["name"]). " has been uploaded.";
 
-             $rs=mysqli_query($con,"INSERT INTO employees (emp_id, created_on, job_type, first_name, last_name, dob, gender, address, phone, email, d_name, schedule_id, password, photo) VALUES ('$emp_id','$created_on','$job_type','$first_name','$last_name','$dob','$gender','$address','$phone','$email','$d_name','$schedule_id','$password','$target_file')") or die(mysqli_error());
+             $rs=mysqli_query($con,"INSERT INTO employees (emp_id, created_on, job_type, first_name, last_name, dob, gender, address, phone, email, d_name, schedule_id, password, photo,salary_status,role) VALUES ('$emp_id','$created_on','$job_type','$first_name','$last_name','$dob','$gender','$address','$phone','$email','$d_name','$schedule_id','$password','$target_file','$status','$role')");
              	if($rs)
              	{
              		echo"<script> alert(' Added successfully')</script>";
-             	}
-             	else
-             	{
-             		echo"<script> alert('unable to saved')</script>".mysqli_error($con);
              	}
 
           } else {
@@ -98,13 +97,14 @@
 
 <!-- The Modal -->
 <div class="container-fluid">
+
 <div class="modal fade" id="add_emp_modal">
   <div class="modal-dialog">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <div class="modal-header" style="background:black;">
-        <h4 class="modal-title" style="color:white;">Add New Employee</h4>
+        <h4 class="modal-title" style="color: white;">Add Employee Details</h4>
         <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
       </div>
 
@@ -114,24 +114,13 @@
           <div class="form-group">
             <div class="row">
 
-              <label for="created_on" class="col-sm-3 control-label">Created On</label>
-
-              <div class="col-sm-9">
-                <input type="date" class="form-control" id="created_on" name="created_on" required="">
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="row">
-
             	<label for="job_type" class="col-sm-3 control-label">Job Type</label>
 
               <div class="col-sm-9">
-                <select class="form-control" name="job_type" id="job_type" required="">
-                  <option value="" selected="">- Select Job Type -</option>
+                <select class="form-control" name="job_type" id="job_type" required>
+                  <option value="" selected="">- Select -</option>
 
-                        <option value="Parmanent">Parmanent</option>
+                        <option value="Permanent">Permanent</option>
 
                         <option value="Contractual">Contractual</option>
 
@@ -146,7 +135,7 @@
             	<label for="first_name" class="col-sm-3 control-label">Firstname</label>
 
             	<div class="col-sm-9">
-              	<input type="text" class="form-control" id="first_name" name="first_name" required="">
+              	<input type="text" class="form-control" id="first_name" name="first_name" required>
             	</div>
             </div>
           </div>
@@ -157,7 +146,7 @@
             	<label for="last_name" class="col-sm-3 control-label">Lastname</label>
 
             	<div class="col-sm-9">
-              	<input type="text" class="form-control" id="last_name" name="last_name" required="">
+              	<input type="text" class="form-control" id="last_name" name="last_name" required>
             	</div>
             </div>
           </div>
@@ -167,7 +156,7 @@
               <label for="dob" class="col-sm-3 control-label">Birthdate</label>
 
               <div class="col-sm-9">
-                  <input type="date" class="form-control" id="dob" name="dob">
+                  <input type="date" class="form-control" id="dob" name="dob" required>
               </div>
           </div>
           </div>
@@ -177,7 +166,7 @@
               <label for="gender" class="col-sm-3 control-label">Gender</label>
 
               <div class="col-sm-9">
-                <select class="form-control" name="gender" id="gender" required="">
+                <select class="form-control" name="gender" id="gender" required>
                   <option value="" selected="">- Select -</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -193,7 +182,7 @@
             	<label for="address" class="col-sm-3 control-label">Address</label>
 
             	<div class="col-sm-9">
-                <textarea class="form-control" name="address" id="address"></textarea>
+                <textarea class="form-control" name="address" id="address" required></textarea>
             	</div>
             </div>
           </div>
@@ -204,7 +193,7 @@
               <label for="phone" class="col-sm-3 control-label">phone</label>
 
               <div class="col-sm-9">
-                <input type="number" class="form-control" id="phone" name="phone">
+                <input type="number" class="form-control" id="phone" name="phone" required>
               </div>
           </div>
           </div>
@@ -214,7 +203,7 @@
               <label for="email" class="col-sm-3 control-label">Email</label>
 
               <div class="col-sm-9">
-                <input type="email" class="form-control" id="email" name="email">
+                <input type="email" class="form-control" id="email" name="email" required>
               </div>
           </div>
           </div>
@@ -224,7 +213,7 @@
               <label for="d_name" class="col-sm-3 control-label">Position</label>
 
               <div class="col-sm-9">
-                <select class="form-control" name="d_name" id="d_name" required="">
+                <select class="form-control" name="d_name" id="d_name" required>
                   <option value="" selected="">- Select -</option>
 <?php
       $query=mysqli_query($con,"SELECT * FROM designation") or die(mysqli_error($con));
@@ -245,7 +234,7 @@
             <label for="schedule_id" class="col-sm-3 control-label">Schedule</label>
             <div class="col-sm-9">
 
-              <select class="form-control" id="schedule_id" name="schedule_id" required="">
+              <select class="form-control" id="schedule_id" name="schedule_id" required>
                 <option value="" selected="">- Select -</option>
                 <?php
                       $query=mysqli_query($con,"SELECT * FROM schedules") or die(mysqli_error($con));
@@ -264,7 +253,7 @@
             <label for="photo" class="col-sm-3 control-label">Photo</label>
 
             <div class="col-sm-9">
-              <input type="file" name="photo" id="photo">
+              <input type="file" name="photo" id="photo" required>
             </div>
         </div>
         </div>
@@ -274,17 +263,17 @@
             <label for="password" class="col-sm-3 control-label">Password</label>
 
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="password" name="password">
+              <input type="text" class="form-control" id="password" name="password" required>
             </div>
         </div>
         </div>
 
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button"  class="btn btn-danger" data-dismiss="modal" style="color:white;">Close</button>
-        <button type="submit" name="submit" class="btn btn-primary">Save</button>
-      </div>
-    </form>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button"  class="btn btn-danger" data-dismiss="modal" style="color:white;">Close</button>
+          <button type="submit" name="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
 
     </div>
   </div>

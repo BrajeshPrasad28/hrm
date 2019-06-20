@@ -12,16 +12,14 @@
       <title>Dasboard</title>
       <link rel="shortcut icon" type="images/png" href="../images/test.svg.png">
       <!-- Bootstrap CSS CDN -->
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+      <link rel="stylesheet" href="../css/bootstrap.min.css">
       <!-- Custom CSS -->
       <link rel="stylesheet" href="css/adminstyle.css">
       <!-- Font Awesome JS -->
       <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <!-- Css for Tables -->
-      <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-      <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.6/css/fixedColumns.dataTables.min.css" type="text/css">
-
+      <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
       <!-- style starts here -->
       <style media="screen">
          /* tr:hover{
@@ -49,10 +47,10 @@
           }
           .emp{
               padding: 3px;
-              /* height: 185px; */
-              /* border: 4px; */
-              /* border-style: solid;
-              border-color: limegreen; */
+              height: 185px;
+              border: 4px;
+              border-style: solid;
+              border-color: limegreen;
               background: #466368;
               background: radial-gradient(#648880, #293f50);
               border-radius: 1rem 1rem 1rem 1rem;
@@ -72,7 +70,7 @@
       <!-- BreadCrumbs starts here -->
       <div class="cssmenu">
            <ul>
-              <li class="active"> <a href="userpanel.php"><i class="fa fa-dashboard"></i>&nbsp; Dasboard</a></li>
+              <li class="active"> <a href="adminpanel.php"><i class="fa fa-dashboard"></i>&nbsp; Dasboard</a></li>
            </ul>
         </div>
       <!-- BreadCrumbs ends here -->
@@ -171,9 +169,7 @@
       </div>
 
       <!-- Jquery For table -->
-      <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-      <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-      <script src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
-
+      <script src="../js/jquery-3.3.1.min.js"></script>
+      <script src="../js/jquery.dataTables.min.js"></script>
    </body>
 </html>

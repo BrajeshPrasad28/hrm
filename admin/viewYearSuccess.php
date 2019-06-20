@@ -3,8 +3,17 @@ require_once('dbconnection.php');
 $emp_id = $_POST['id'];
 $year = $_POST['year'];
 if(isset($_POST['id'])){
+  $sql1 = mysqli_query($con,"SELECT first_name,last_name,job_type FROM employees WHERE emp_id = '$emp_id'");
+  while ($row1 = mysqli_fetch_array($sql1)) {
+     $name = $row1['first_name']." ".$row1['last_name'];
+     $job_status = $row1['job_type'];
+  }
  ?>
 <center> <h2 style="color: teal;"><?php echo "Year: ".$year; ?> </h2> </center>
+<div class="row ml-4">
+  <p style="color: black;"><strong style="font-weight: bold;">Name:&nbsp;</strong><?php echo $name.", "; ?>&nbsp;</p>
+  <p style="color: black;"><strong style="font-weight: bold;">Job Status:&nbsp;</strong><?php echo $job_status; ?></p>
+</div>
 <?php
  $jan = array(); $feb = array(); $march = array(); $april = array(); $may = array(); $june = array(); $july = array();
  $august = array(); $september = array(); $october = array(); $november = array(); $december = array();

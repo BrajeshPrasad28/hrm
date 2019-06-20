@@ -1,109 +1,132 @@
 <?php
-require_once('dbconnection.php');
-
-require("user_detail.php");
-
- if(!isset($_SESSION['emp_id'])){
-   header("location: logout.php");
- }
- $msg = "";
- $msg1 = "";
- // echo $donor->email;
-if(isset($_POST['submit'])){
-  $password = $_POST['password'];
-  $c_password = $_POST['c_password'];
-
-    if($password == $c_password){
-      $query = mysqli_query($con,"UPDATE employees SET password='$password' WHERE emp_id ='$emp->emp_id' AND password='$emp->password' ") or die(mysqli_error($con));
-      $_SESSION['password'] = $password;
-      $msg1 = "Password Changed";
-    }else{
-      $msg = "Confirm Password didn't matched with Password";
-    }
-
-}
+  session_start();
+  if(!isset($_SESSION['User'])){
+    header('location: index.php');
+  }
+  $emp_id=$_SESSION['User'];
  ?>
-
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <title>Payroll and Attendance Maintenance System</title>
-    <link rel="shortcut icon" type="images/png" href="../images/test.svg.png">
-
-    <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="../css/userstyle.css">
-    <!-- Css for Tables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <!-- Font Awesome JS -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Table Heeader Style-->
-
-</head>
-
-<body>
-
-<?php include 'sidebar_and_header1.php';?>
-
-
-      <div class="cssmenu">
-          <ul>
-              <li class="active"><a href="#">Change Password</a></li>
-              <li><a href="#">Account</a></li>
-              <li><a href="userpanel.php"><i class="fa fa-home"></i> Home</a></li>
-          </ul>
-      </div>
-      <div class="card">
-        <div class="container" style="height: 450px;">
-          <div class="header">
-            <h3><center style="font-weight: bolder; margin-top: 15px;"> Change Password</h3></center>
-          </div>
-          <div class="col-sm-4 col-sm-offset-4" style="height:319px; width:350px; margin:auto; margin-top:30px; background-color:white; border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
-            <div class="passchange" style="margin-top: 0px; font-weight: bolder;">
-              <form method="post" style="position: static;margin-bottom: 0px;">
-                <p class="text-danger"><?php echo $msg; ?></p>
-                <p class="text-success"><?php echo $msg1; ?></p>
-                <div class="form-group">
-                  <label for="password"> New Password</label>
-                  <input type="password" class="form-control" name="password" placeholder="Enter New Password">
+   <head>
+      <title>Payroll and Attendance Maintenance System</title>
+      <?php include 'header.php'; ?>
+   </head>
+   <body>
+    <?php include 'sidebar.php'; ?>
+            <div class="cssmenu">
+                <ul>
+                    <li class="active"><a href="#">Change Password</a></li>
+                    <li><a href="#">Account</a></li>
+                    <li><a href="userpanel.php"><i class="fa fa-home"></i> Home</a></li>
+                </ul>
+            </div>
+            <div class="card">
+              <div id="success" style="display:none;">
+             </div>
+            <form id='changepassword' name='changepassword' class="form-horizontal" method="post">
+              <input type="hidden" name="emp_id" id='emp_id' value="<?php echo $emp_id; ?>">
+              <div class="form-group row">
+               <label class="col-sm-2 control-label">Current Password</label>
+               <div class="col-sm-4">
+                 <input type="password" class="form-control" id='current_pass' name='current_pass' onkeyup='check1();' required>
+               </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 control-label">New Password</label>
+                <div class="col-sm-4">
+                  <input type="password" class="form-control" id='new_pass' name="new_pass" onkeyup='check();' required>
                 </div>
-                  <div class="form-group">
-                    <label for="c_password">Confirm Password</label>
-                    <input type="password" class="form-control" name="c_password" placeholder="Enter Confirm Password">
-                  </div>
-                    <center><input type="button" class="btn btn-success btn-lg" name="submit" value="Submit" style="margin-top: 30px;"></center>
-              </form>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-2 control-label">Confirm New Password</label>
+                <div class="col-sm-4">
+                  <input type="password" class="form-control" id='confirm_new_pass' name="confirm_new_pass" onkeyup='check();'  required>
+                </div>
+                <span id='message'></span>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-5">
+                    <input type="button" name="save_btn" class="btn btn-success" value="Change Password" id="save_btn">
+                </div>
+              </div>
+            </form>
             </div>
           </div>
-        </div>
-      </div>
-      <!-- this two divs are belongs to include sidebar_navbar page -->
-      </div>
-      </div>
+    </div>
 
-
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- jQuery - Slim version (=without AJAX) -->
+    <script src="../js/jquery-3.3.1.slim.min.js"></script>
+    <script src="../js/jquery-3.3.1.min.js"></script>
     <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="../js/popper.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
             });
         });
-    </script>
+        //script for password matching for new Password
+        var check = function() {
+        if (document.getElementById('new_pass').value ==
+          document.getElementById('confirm_new_pass').value) {
+          document.getElementById('message').style.color = 'green';
+          if(document.getElementById('new_pass').value == '' &&
+            document.getElementById('confirm_new_pass').value ==''){
+              document.getElementById('message').innerHTML = '';
+            }else {
+              document.getElementById('message').innerHTML = 'Matching';
+            }
 
+        } else {
+          document.getElementById('message').style.color = 'red';
+          document.getElementById('message').innerHTML = 'Not matching';
+        }
+      }
+      //onchange remove disabled button
+      var check1 = function() {
+        $("#save_btn").removeAttr("disabled");
+      }
+    </script>
+    <!-- Ajax for changing password -->
+    <script>
+    $(document).ready(function() {
+    	$('#save_btn').on('click', function() {
+    		$("#save_btn").attr("disabled", "disabled");
+    		var current_pass = $('#current_pass').val();
+    		var new_pass = $('#new_pass').val();
+    		var confirm_new_pass = $('#confirm_new_pass').val();
+        var emp_id = $('#emp_id').val();
+    		if(current_pass!="" && new_pass!="" && confirm_new_pass!=""){
+          if(new_pass==confirm_new_pass){
+    			$.ajax({
+    				url: "changepassword_process.php",
+    				type: "POST",
+    				data: {	current_pass: current_pass,	confirm_new_pass: confirm_new_pass, emp_id: emp_id},
+    				// cache: false,
+    				success: function(data) {
+
+    											$("#save_btn").removeAttr("disabled");
+                          $('#success').fadeIn().html(data);
+    											//$('#success').html('Leave has been applied Successfully');
+                      		setTimeout(function() {
+                      				$('#success').fadeOut("slow");
+                      		}, 3000);
+    											$('#changepassword').trigger('reset');
+
+                      }
+    			});
+        }else {
+          alert('New password and Confirm New password must be same');
+        }
+    		}
+    		else{
+    			alert('Please fill all the field !');
+    		}
+    	});
+    });
+    </script>
 </body>
 
 </html>

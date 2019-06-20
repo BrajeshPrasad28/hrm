@@ -2,6 +2,16 @@
  require_once('dbconnection.php');
 
  require("admin_detail.php");
+ $username = $_SESSION['username'];
+ $password = $_SESSION['password'];
+ $query = mysqli_query($con, "SELECT * FROM employees WHERE emp_id = '$username' AND password = '$password' AND role='admin'");
+ while ($adr=mysqli_fetch_array($query)) {
+    $emp_id = $adr['emp_id'];
+    $photo = $adr['photo'];
+    $first_name = $adr['first_name'];
+    $last_name = $adr['last_name'];
+    $created_on = $adr['created_on'];
+  }
 
   if(!isset($_SESSION['username'])){
     header("location: logout.php");
@@ -56,7 +66,7 @@
          if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
              // echo "The file ". basename( $_FILES["photo"]["name"]). " has been uploaded.";
 
-               $query=mysqli_query($con,"UPDATE admin SET photo='$target_file' WHERE username = '$admin->username'") or die(mysqli_error($con));
+               $query=mysqli_query($con,"UPDATE employees SET photo='$target_file' WHERE emp_id = '$username' AND role='admin'") or die(mysqli_error($con));
             	if($query)
             	{
             		echo"<script> alert('successfully saved')</script>";
@@ -87,10 +97,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" type="images/png" href="../images/test.svg.png">
 
-    <title>UPDATE PROFILE</title>
+    <title>Profile</title>
 
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/adminstyle.css">
 
@@ -102,11 +112,20 @@
   <body>
 <!-- div of this include page are closed down below which shows extra two div -->
   <?php include 'sidebar_navbar1.php'; ?>
+  <!-- Bredcrumb -->
+  <div class="cssmenu">
+     <ul>
+        <li class="active"><a href="#">View Profile</a></li>
+        <li><a href="#">Account</a></li>
+        <li><a href="adminpanel.php"><i class="fa fa-home"></i> Home</a></li>
+     </ul>
+  </div>
+  <!-- /Bredcrumb -->
 <!-- update page content starts here -->
   <div class="card">
   <div class="container">
   <div class="header">
-  <h3><center style="font-weight: bolder; margin-top: 15px;"> Your Profile</h3></center>
+  <h3><center style="font-weight: bolder; margin-top: 15px; color: teal;">Profile</h3></center>
   </div>
   <div class="main-content">
   <form class="wrap" method="post" enctype="multipart/form-data">
@@ -114,15 +133,15 @@
 
   <table cellpadding="0" cellspacing="0" style="margin:auto; width:100%;">
     <tr><td colspan="3">&nbsp;</td></tr>
-      <tr><td  style=" padding-left:120px; padding-bottom: 12px;" ><img src="<?php echo $admin->photo; ?>" width="170px" class="shaddoww" style="border: 2px solid powderblue; border-radius: 50%; margin-top: -80px;"/>&nbsp; </td>
+      <tr><td  style=" padding-left:120px; padding-bottom: 12px;" ><img src="<?php echo $photo; ?>" width="170px" class="shaddoww" style="border: 2px solid powderblue; border-radius: 50%; margin-top: -80px;"/>&nbsp; </td>
       <td style="vertical-align:top;padding-top:0px; font-weight: bold;">
         <p class="text-danger text-center" style="padding: 0px 0px 0px;"></p>
           <table cellpadding="0" cellspacing="1px" style="width:100%; height:424px;">
-            <tr><td class="lefttd">Username:</td><td><?php echo $admin->username; ?></td></tr>
-            <tr><td class="lefttd"> First Name:</td><td><?php echo $admin->firstname; ?></td></tr>
-            <tr><td class="lefttd">Last Name:</td><td><?php echo $admin->lastname; ?></td></tr>
-            <tr><td class="lefttd">Created On:</td><td><?php echo $admin->created_on; ?></td></tr>
-           <tr><td class="lefttd">Uplode Picture</td><td><input type="file" id="photo" name="photo" /></td></tr>
+            <tr><td class="lefttd">Username ID:</td><td><?php echo $emp_id; ?></td></tr>
+            <tr><td class="lefttd"> First Name:</td><td><?php echo $first_name; ?></td></tr>
+            <tr><td class="lefttd">Last Name:</td><td><?php echo $last_name; ?></td></tr>
+            <tr><td class="lefttd">Created On:</td><td><?php echo $created_on; ?></td></tr>
+           <tr><td class="lefttd">Uplode Picture</td><td><input type="file" id="photo" name="photo" / required></td></tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr><td>&nbsp;</td>
            <td><input type="submit" value="Update" name="submit" class="btn btn-primary" style="margin-top: -112px;">

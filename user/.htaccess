@@ -1,0 +1,4 @@
+RewriteEngine on
+
+RewriteRule ^Home.py?$ index.php
+RewriteRule ^dasboard.py?$ userpanel.php

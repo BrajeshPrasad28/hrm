@@ -1,10 +1,25 @@
-<?php
-   include 'DBconnection.php';
-   include 'sidebar_and_header.php';
-   $emp_id=$_SESSION['User'];
-   date_default_timezone_set('Asia/Kolkata');
-   $date = date('Y-m-d');
-   ?>
+   <?php
+    include 'dbconnection.php';
+     session_start();
+     if(!isset($_SESSION['User'])){
+       header('location: index.php');
+     }
+      $emp_id=$_SESSION['User'];
+      date_default_timezone_set('Asia/Kolkata');
+      $date = date('Y-m-d');
+      $yr = date('Y');
+      $sdate = $yr."-01-01";
+      $edate = $yr."-12-31";
+    ?>
+   <!DOCTYPE html>
+   <html>
+      <head>
+        <title>Apply Leave</title>
+        <?php include 'header.php'; ?>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/daterangepicker.min.css">
+      </head>
+      <body>
+      <?php include 'sidebar.php'; ?>
 <div class="cssmenu">
    <ul>
       <li class="active"><a href="#">Apply Leave</a></li>
@@ -13,9 +28,9 @@
    </ul>
 </div>
 <div class="card" style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
+<h3 class="mt-3" style="text-align: center; color: teal;">Year:&nbsp;<?php echo $date; ?></h3>
    <form id="leaveform" method="post" name="leaveform">
-     <div class="alert alert-success alert-dismissible" id="success" style="display:none;">
-   	  <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+     <div id="success" style="display:none">
    	</div>
       <div class="row">
          <div class=" ml-5" id='1'>
@@ -30,6 +45,156 @@
                   while($row = mysqli_fetch_array($result)){
                     $gender = $row['gender'];
                   }
+                  //*********************************************
+                  // this part is calculation of leave balance of employee
+                  $sql3 = "SELECT * FROM emp_leave where emp_id='$emp_id' and status='1' and posting_date BETWEEN '$sdate' and '$edate'";
+                  $result3 = mysqli_query($con,$sql3);
+                  $from_date_emergency = array(); $to_date_emergency = array(); $emergency_total = 0;$em = array();
+                  $from_date_medical = array(); $to_date_medical = array(); $medical_total = 0; $md = array();
+                  $from_date_Maternity = array(); $to_date_Maternity = array(); $Maternity_total = 0; $mt = array();
+                  $from_date_educational = array(); $to_date_educational = array(); $educational_total = 0; $ed = array();
+                  $from_date_casual = array(); $to_date_casual = array(); $casual_total = 0; $cs = array();
+                  while($row3 = mysqli_fetch_array($result3)){
+
+                    if($row3['leave_id']==1){
+                      $from_date_emergency[] = $row3['from_date'];
+                      $to_date_emergency[] = $row3['to_date'];
+                    }
+
+                    if($row3['leave_id']==2){
+                      $from_date_medical[] = $row3['from_date'];
+                      $to_date_medical[] = $row3['to_date'];
+                    }
+
+                    if($row3['leave_id']==3){
+                      $from_date_Maternity[] = $row3['from_date'];
+                      $to_date_Maternity[] = $row3['to_date'];
+                    }
+
+                    if ($row3['leave_id']==4) {
+                      $from_date_educational[] = $row3['from_date'];
+                      $to_date_educational[] = $row3['to_date'];
+                    }
+
+                    if ($row3['leave_id']==5) {
+                      $from_date_casual[] = $row3['from_date'];
+                      $to_date_casual[] = $row3['to_date'];
+                    }
+
+                   }
+                   $bday1 = array();
+                   $today1 = array();
+                   for($i=0;$i<count($from_date_emergency);$i++){
+                     $bday1[$i] = date_create($from_date_emergency[$i]);
+                     $today1[$i] = date_create($to_date_emergency[$i]);
+                     $diff1 = date_diff($bday1[$i],$today1[$i]);
+                     $em[] = $diff1->format('%a');
+                   }
+                   // this part is for medical leave granted calculation
+                   $bday2 = array();
+                   $today2 = array();
+                   for($i=0;$i<count($from_date_medical);$i++){
+                     $bday2[$i] = date_create($from_date_medical[$i]);
+                     $today2[$i] = date_create($to_date_medical[$i]);
+                     $diff2 = date_diff($bday2[$i],$today2[$i]);
+                     $md[] = $diff2->format('%a');
+                   }
+                   // this part is for Maternity leave
+                   $bday3 = array();
+                   $today3 = array();
+                   for($i=0;$i<count($from_date_Maternity);$i++){
+                     $bday3[$i] = date_create($from_date_Maternity[$i]);
+                     $today3[$i] = date_create($to_date_Maternity[$i]);
+                     $diff3 = date_diff($bday3[$i],$today3[$i]);
+                     $mt[] = $diff3->format('%a');
+                   }
+                   //this part is for edcucational leave
+                   $bday4 = array();
+                   $today4 = array();
+                   for($i=0;$i<count($from_date_educational);$i++){
+                     $bday4[$i] = date_create($from_date_educational[$i]);
+                     $today4[$i] = date_create($to_date_educational[$i]);
+                     $diff4 = date_diff($bday4[$i],$today4[$i]);
+                     $ed[] = $diff4->format('%a');
+                     // $educational_total = $educational_total+(strtotime($to_date_educational[$i])-strtotime($from_date_educational[$i]))/(24*60*60);
+
+                   }
+                   //this part is for casual leave
+                   $bday5 = array();
+                   $today5 = array();
+                   for($i=0;$i<count($from_date_casual);$i++){
+                     $bday5[$i] = date_create($from_date_casual[$i]);
+                     $today5[$i] = date_create($to_date_casual[$i]);
+                     $diff5 = date_diff($bday5[$i],$today5[$i]);
+                     $cs[] =  $diff5->format('%a');
+                     // $casual_total = $casual_total+(strtotime($to_date_casual[$i])-strtotime($from_date_casual[$i]))/(24*60*60);
+
+                   }
+                   //****************************************
+                   // this part is for displing leave balance of employee
+                   if($gender=='Male'){
+                      $sql2 = "SELECT * FROM leave_details where eligible_for='MF'";
+                   }
+                   elseif($gender=='Female'){
+                      $sql2 = "SELECT * FROM leave_details";
+                   }
+                   //-----------------calculating number of granted date---------
+                   for($i=0;$i<count($em);$i++) {
+                     $emergency_total = $emergency_total+$em[$i];
+                   }
+                   for($i=0;$i<count($md);$i++) {
+                     $medical_total = $medical_total+$md[$i];
+                   }
+                   for($i=0;$i<count($mt);$i++) {
+                     $Maternity_total = $Maternity_total+$mt[$i];
+                   }
+                   for($i=0;$i<count($ed);$i++) {
+                     $educational_total = $educational_total+$ed[$i];
+                   }
+                   for($i=0;$i<count($cs);$i++) {
+                     $casual_total = $casual_total+$cs[$i];
+                   }
+
+                   //------------------------------------------------------------
+
+                  $result2 = mysqli_query($con,$sql2);
+                  $emergency_balance = 0; $emergency_available = 0;
+                  $medical_balance = 0; $medical_available = 0;
+                  $Maternity_balance = 0; $Maternity_available = 0;
+                  $educational_balance = 0; $educational_available = 0;
+                  $casual_balance = 0; $casual_available = 0;
+                  $leavetype = array();
+                  while($row2 = mysqli_fetch_array($result2)){
+
+                    $leavetype[] = $row2['leave_type'];
+
+                    if($row2['leave_type']=='Emergency'){
+                     $emergency_balance = $row2['leave_balance'];
+                     $emergency_available = ($emergency_balance-$emergency_total);
+                   }
+                   if($row2['leave_type']=='Medical'){
+                     $medical_balance = $row2['leave_balance'];
+                     $medical_available = ($medical_balance-$medical_total);
+                   }
+
+                   //********Start1 This is part depends on male and female*************
+                   if($gender=='Female'){
+                   if($row2['leave_type']=='Maternity' /*&& $gender == 'Female'*/){
+                       $Maternity_balance = $row2['leave_balance'];
+                       $Maternity_available = ($Maternity_balance-$Maternity_total);
+                     }
+                   }
+                   //*******************End1****************************************
+                   if($row2['leave_type']=='Educational'){
+                     $educational_balance = $row2['leave_balance'];
+                     $educational_available = ($educational_balance-$educational_total);
+                   }
+                   if($row2['leave_type']=='Casual'){
+                     $casual_balance = $row2['leave_balance'];
+                     $casual_available = ($casual_balance-$casual_total);
+                     }
+                 }
+                  //*********************************************
                   //query for retrieving leave type
                   if($gender=='Male'){
                      $sql1 = "SELECT leave_id,leave_type, leave_balance FROM leave_details where eligible_for='MF'";
@@ -41,15 +206,34 @@
 
                    ?>
                <div class="ml-5" style="width: 60%;">
-                  <select name="leavetype" id="leavetype" style="background-color: white;border-top: none;border-left: none; border-right: none;">
+                  <select name="leavetype" id="leavetype" class='leave_Type' onchange="check()" style="background-color: white;border-top: none;border-left: none; border-right: none;">
                      <option value="" selected disabled hidden>Select Leave Type</option>
                      <?php
                         while($row1 = mysqli_fetch_array($result1)){
-                        ?>
-                     <option value="<?php echo $row1['leave_id']; ?>"><?php echo $row1['leave_type']; ?></option>
-                     <?php
+                          if($row1['leave_id']==1){
+                            $emergency = $row1['leave_type'];
+                          }
+                          elseif($row1['leave_id']==2){
+                            $medical = $row1['leave_type'];
+                          }
+                          elseif($row1['leave_id']==3){
+                            $maternity = $row1['leave_type'];
+                          }
+                          elseif($row1['leave_id']==4){
+                            $educational = $row1['leave_type'];
+                          }
+                          elseif($row1['leave_id']==5){
+                            $casual = $row1['leave_type'];
+                          }
                         }
                         ?>
+                     <option data-id='<?php echo $emergency_available; ?>' value="1"><?php echo $emergency; ?></option>
+                     <option data-id='<?php echo $medical_available; ?>' value="2"><?php echo $medical; ?></option>
+                     <?php if($gender=='Female'){ ?>
+                     <option data-id='<?php echo $Maternity_available; ?>' value="3"><?php echo $maternity?></option>
+                     <?php } ?>
+                     <option data-id='<?php echo $educational_available; ?>' value="4"><?php echo $educational; ?></option>
+                     <option data-id='<?php echo $casual_available?>' value="5"><?php echo $casual; ?></option>
                   </select>
                </div>
             </div>
@@ -57,15 +241,17 @@
                <div>
                   <label for="fdate">From Date</label>
                </div>
+               <form action="javascript: void(0);"><!--This form is only for date range picker -->
                <div class="ml-5">
-                  <input type="date" id="from_date" name="from_date" style="width: auto; border-radius: 0; border: 1px solid #ccc; float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;">
+                  <input type="text" name="value_from_start_date" id='value_from_start_date' data-datepicker="separateRange"  autocomplete="false" placeholder="yyy-mm-dd" style="width: auto; border-radius: 0; border: 1px solid #ccc; float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;">
                </div>
                <div class="ml-5">
                   <label for="todate">To Date</label>
                </div>
                <div class="ml-5">
-                  <input type="date" id="to_date" name="to_date" style="width: auto; border-radius: 0; border: 1px solid #ccc;  float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;">
+                  <input input type="text" name="value_from_end_date" id='value_from_end_date' data-datepicker="separateRange" autocomplete="false" placeholder="yyyy-mm-dd" style="width: auto; border-radius: 0; border: 1px solid #ccc;  float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;" disabled>
                </div>
+             </form>
             </div>
             <div class="row ml-3 mt-3">
                <div class="">
@@ -82,139 +268,58 @@
                <input type="button" name="save" class="btn btn-success" value="Apply" id="butsave">
             </div>
          </div>
-         <div style="width: 10%;"></div>
-         <div class="ml-5 mt-3 mb-4" id='2'>
+         <div style="width: 5%;"></div>
+         <div class="mt-3 mb-4" id='2'>
             <h3>Leave Balance</h3>
             <table class="table table-bordered">
                <thead>
                   <th>Leave Name</th>
                   <th>Balance</th>
                </thead>
-               <?php
-               // this part is calculation of leave balance of employee
-               $sql3 = "SELECT * FROM emp_leave where emp_id='$emp_id' and status='1'";
-               $result3 = mysqli_query($con,$sql3);
-               $from_date_emergency = array(); $to_date_emergency = array(); $emergency_total = 0;
-               $from_date_medical = array(); $to_date_medical = array(); $medical_total = 0;
-               $from_date_pregnancy = array(); $to_date_pregnancy = array(); $pregnancy_total = 0;
-               $from_date_educational = array(); $to_date_educational = array(); $educational_total = 0;
-               $from_date_casual = array(); $to_date_casual = array(); $casual_total = 0;
-               while($row3 = mysqli_fetch_array($result3)){
-
-                 if($row3['leave_id']==1){
-                   $from_date_emergency[] = $row3['from_date'];
-                   $to_date_emergency[] = $row3['to_date'];
-                 }
-
-                 if($row3['leave_id']==2){
-                   $from_date_medical[] = $row3['from_date'];
-                   $to_date_medical[] = $row3['to_date'];
-                 }
-
-                 if($row3['leave_id']==3){
-                   $from_date_pregnancy[] = $row3['from_date'];
-                   $to_date_pregnancy[] = $row3['to_date'];
-                 }
-
-                 if ($row3['leave_id']==4) {
-                   $from_date_educational[] = $row3['from_date'];
-                   $to_date_educational[] = $row3['to_date'];
-                 }
-
-                 if ($row3['leave_id']==5) {
-                   $from_date_casual[] = $row3['from_date'];
-                   $to_date_casual[] = $row3['to_date'];
-                 }
-
-                }
-                //This part is for granted leave calculation***********
-                // this part is for Emergency
-                for($i=0;$i<count($from_date_emergency);$i++){
-                  $emergency_total = $emergency_total+(strtotime($to_date_emergency[$i])-strtotime($from_date_emergency[$i]))/(24*60*60);
-
-                }
-                // this part is for medical leave granted calculation
-                for($i=0;$i<count($from_date_medical);$i++){
-                   $medical_total = $medical_total+(strtotime($to_date_medical[$i])-strtotime($from_date_medical[$i]))/(24*60*60);
-                }
-                // this part is for Pregnancy leave
-                for($i=0;$i<count($from_date_pregnancy);$i++){
-                  $pregnancy_total = $pregnancy_total+(strtotime($to_date_pregnancy[$i])-strtotime($from_date_pregnancy[$i]))/(24*60*60);
-
-                }
-                //this part is for edcucational leave
-                for($i=0;$i<count($from_date_educational);$i++){
-                  $educational_total = $educational_total+(strtotime($to_date_educational[$i])-strtotime($from_date_educational[$i]))/(24*60*60);
-
-                }
-                //this part is for casual leave
-                for($i=0;$i<count($from_date_casual);$i++){
-                  $casual_total = $casual_total+(strtotime($to_date_casual[$i])-strtotime($from_date_casual[$i]))/(24*60*60);
-
-                }
-                //****************************************
-                // this part is for displing leave balance of employee
-                if($gender=='Male'){
-                   $sql2 = "SELECT * FROM leave_details where eligible_for='MF'";
-                }
-                elseif($gender=='Female'){
-                   $sql2 = "SELECT * FROM leave_details";
-                }
-
-               $result2 = mysqli_query($con,$sql2);
-               ?>
                <tbody>
                  <?php
-                   $emergency_balance = 0;
-                   $medical_balance = 0;
-                   $pregnancy_balance = 0;
-                   $educational_balance = 0;
-                   $casual_balance = 0;
-                   while($row2 = mysqli_fetch_array($result2)){
+                 if($gender=='Male'){
+                   $leavetype1 = array_values($leavetype);
+                 }else{
+                    $leavetype1 = $leavetype;
+                  }
+                  for($i=0;$i<count($leavetype1);$i++)
+                  {
                    ?>
                   <tr>
-                     <td><?php echo $row2['leave_type']; ?></td>
+                     <td><?php echo $leavetype1[$i]; ?> </td>
                      <td>
                       <?php
-                      if($row2['leave_type']=='Emergency'){
-                       $emergency_balance = $row2['leave_balance'];
-                       echo ($emergency_balance-$emergency_total)." / ".$emergency_balance;
-                     }
-                     if($row2['leave_type']=='Medical'){
-                       $medical_balance = $row2['leave_balance'];
-                       echo ($medical_balance-$medical_total)." / ".$medical_balance;
-                     }
-
-                     //********This is part depends on male and female*************
-                     if($gender==3){
-                       if($row2['leave_type']=='Pregnancy' && $gender == 3){
-                         $pregnancy_balance = $row2['leave_balance'];
-                         echo ($pregnancy_balance-$pregnancy_total)." / ".$pregnancy_balance;
-                       }
-                     }else{
-                       if($row2['leave_type']=='Pregnancy'){
-                         $pregnancy_balance = $row2['leave_balance'];
-                         echo ($pregnancy_balance-$pregnancy_total)." / ".$pregnancy_balance;
-                       }
-                     }
-                     //*********************************************************************
-                     if($row2['leave_type']=='Educational'){
-                       $educational_balance = $row2['leave_balance'];
-                       echo ($educational_balance-$educational_total)." / ".$educational_balance;
-                     }
-                     if($row2['leave_type']=='Casual'){
-                       $casual_balance = $row2['leave_balance'];
-                       echo ($casual_balance-$casual_total)." / ".$casual_balance;
-                     }
+                      if($gender=='Male'){
+                        if($i==0){
+                          echo $emergency_available." / ".$emergency_balance;
+                        }elseif($i==1){
+                          echo $medical_available." / ".$medical_balance;
+                        }elseif($i==2){
+                          echo $educational_available." / ".$educational_balance;
+                        }elseif($i==3){
+                          echo $casual_available." / ".$casual_balance;
+                        }
+                      }else {
+                        if($i==0){
+                          echo $emergency_available." / ".$emergency_balance;
+                        }elseif($i==1){
+                          echo $medical_available." / ".$medical_balance;
+                        }elseif($i==2){
+                          echo $Maternity_available." / ".$Maternity_balance;
+                        }elseif($i==3){
+                          echo $educational_available." / ".$educational_balance;
+                        }elseif($i==4){
+                          echo $casual_available." / ".$casual_balance;
+                        }
+                      }
 
                       ?>
                     </td>
                   </tr>
-                  <?php
-                      }
-                  //   }
-                  // }
-                   ?>
+                <?php }
+                  mysqli_close($con);
+                 ?>
                </tbody>
             </table>
          </div>
@@ -223,32 +328,22 @@
 </div>
 </div>
 </div>
-<?php
-    date_default_timezone_set('Asia/Kolkata');
-    $date = date('Y-m-d');
-    // if(isset($_POST['submit']))
-    //   {
-    //     echo $_POST['leavetype']."<br>";
-    //     echo $_POST['from_date']."<br>";
-    //     echo $_POST['to_date']."<br>";
-    //     echo $_POST['description']."<br>";
-    //     echo $date;
-    //   }
- ?>
 <!-- jQuery CDN - Slim version (=without AJAX) -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="../js/jquery-3.3.1.slim.min.js"></script>
 <!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+<script src="../js/popper.min.js"></script>
 <!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<!-- javascript -->
+<script src="../js/jquery.min.js"></script>
 <script type="text/javascript">
+ // for sidebar
    $(document).ready(function () {
        $('#sidebarCollapse').on('click', function () {
            $('#sidebar').toggleClass('active');
        });
    });
-   //for dropdown menu
+   //script for textarea
    $(document).find('textarea').each(function () {
    var offset = this.offsetHeight - this.clientHeight;
 
@@ -256,34 +351,37 @@
        $(this).css('height', 'auto').css('height', this.scrollHeight + offset);
      });
    });
+   //onchange remove disabled button
+   var check = function() {
+     $("#butsave").removeAttr("disabled");
+   }
 </script>
 <!-- data insert using ajax for apply leave -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
 	$('#butsave').on('click', function() {
 		$("#butsave").attr("disabled", "disabled");
 		var leavetype = $('#leavetype').val();
-		var from_date = $('#from_date').val();
-		var to_date = $('#to_date').val();
+		var value_from_start_date = $('#value_from_start_date').val();
+		var value_from_end_date = $('#value_from_end_date').val();
 		var description = $('#description').val();
     var date = $('#date').val();
     var status = $('#status').val();
     var emp_id = $('#emp_id').val();
-		if(leavetype!="" && from_date!="" && to_date!="" && description!=""){
+		if(leavetype!="" && value_from_start_date!="" && value_from_end_date!="" && description!=""){
 			$.ajax({
 				url: "apply_process.php",
 				type: "POST",
-				data: {	leavetype: leavetype,	from_date: from_date,	to_date: to_date,	description: description, date: date, status: status, emp_id: emp_id},
+				data: {	leavetype: leavetype,	value_from_start_date: value_from_start_date,	value_from_end_date: value_from_end_date,	description: description, date: date, status: status, emp_id: emp_id},
 				// cache: false,
 				success: function(data) {
 
 											$("#butsave").removeAttr("disabled");
                       $('#success').fadeIn().html(data);
-											$('#success').html('Leave has been applied Successfully');
-                  				setTimeout(function() {
-                  					$('#success').fadeOut("slow");
-                  				}, 2000 );
+										//	$('#success').html('Leave has been applied Successfully');
+                  		setTimeout(function() {
+                  				$('#success').fadeOut("slow");
+                  		}, 4000 );
 											$('#leaveform').trigger('reset');
 
                   }
@@ -295,10 +393,75 @@ $(document).ready(function() {
 	});
 });
 </script>
-
+<!-- Script for select box starts here  -->
 <script src="../css/SelectBox.js"></script>
 <script>
    $('select').SelectBox();
+</script>
+<!-- Script for select box ends here -->
+<!-- cdn link for datepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/daterangepicker.min.js"></script>
+<!-- Script for Date range picker -->
+<script>
+  $("select.leave_Type").change(function(){
+    var leave = $(this).children("option:selected").data('id');
+    //var leave = $(this).children("option:selected").val();
+    //alert("You have selected the leve id - " + leave);
+
+    var separator = ' - ', dateFormat = 'YYYY-MM-DD';
+    var options = {
+        autoUpdateInput: false,
+        autoApply: true,
+        dateLimit: {
+            days: leave
+        },
+        locale: {
+            format: dateFormat,
+            separator: separator
+          },
+        minDate: moment().add(1, 'days'),
+        maxDate: moment().add(359, 'days'),
+        opens: "right"
+    };
+
+
+        $('[data-datepicker=separateRange]')
+            .daterangepicker(options)
+            .on('apply.daterangepicker' ,function(ev, picker) {
+                var boolStart = this.name.match(/value_from_start_/g) == null ? false : true;
+                var boolEnd = this.name.match(/value_from_end_/g) == null ? false : true;
+
+                var mainName = this.name.replace('value_from_start_', '');
+                if(boolEnd) {
+                    mainName = this.name.replace('value_from_end_', '');
+                    $(this).closest('form').find('[name=value_from_end_'+ mainName +']').blur();
+                }
+
+                $(this).closest('form').find('[name=value_from_start_'+ mainName +']').val(picker.startDate.format(dateFormat));
+                $(this).closest('form').find('[name=value_from_end_'+ mainName +']').val(picker.endDate.format(dateFormat));
+
+                $(this).trigger('change').trigger('keyup');
+            })
+            .on('show.daterangepicker', function(ev, picker) {
+                var boolStart = this.name.match(/value_from_start_/g) == null ? false : true;
+                var boolEnd = this.name.match(/value_from_end_/g) == null ? false : true;
+                var mainName = this.name.replace('value_from_start_', '');
+                if(boolEnd) {
+                    mainName = this.name.replace('value_from_end_', '');
+                }
+
+                var startDate = $(this).closest('form').find('[name=value_from_start_'+ mainName +']').val();
+                var endDate = $(this).closest('form').find('[name=value_from_end_'+ mainName +']').val();
+
+                $('[name=daterangepicker_start]').val(startDate).trigger('change').trigger('keyup');
+                $('[name=daterangepicker_end]').val(endDate).trigger('change').trigger('keyup');
+
+                if(boolEnd) {
+                    $('[name=daterangepicker_end]').focus();
+                }
+            });
+    });
 </script>
 </body>
 </html>

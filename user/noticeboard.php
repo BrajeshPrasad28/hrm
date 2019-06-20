@@ -1,9 +1,18 @@
 <?php
-
-  include('DBconnection.php');
-
+   include('dbconnection.php');
+   session_start();
+   if(!isset($_SESSION['User'])){
+     header('location: index.php');
+   }
 ?>
-<?php include 'sidebar_and_header1.php';?>
+   <!DOCTYPE html>
+   <html>
+   <head>
+       <title>Payroll and Attendance Maintenance System</title>
+       <?php include 'header1.php';?>
+   </head>
+   <body>
+    <?php include 'sidebar.php';?>
             <div class="cssmenu">
                 <ul>
                     <li class="active"><a href="#">Notice Board</a></li>
@@ -20,50 +29,35 @@
                     </div>-->
                     <div class="content-inner">
                       <div id="notice">
-                        <table id="leavehistory" class="table table-stripped" name="leavehistory">
-                           <thead class="table-dark">
+                        <table id="leavehistory" class="table table-stripped table-bordered" name="leavehistory">
+                           <thead style="background-color: #660066; color: white;">
                                <tr>
-                                   <th>Date</th>
-                                   <th>Title</th>
-                                   <th>Message</th>
-                                   <th>Status</th>
+                                 <th style="width: 5%;">#</th>
+                                 <th style="width: 10%;">Date</th>
+                                 <th>Title</th>
+                                 <th>Message</th>
+                                 <th>Status</th>
                                </tr>
                            </thead>
-                           <tbody>
-                             <?php
-                                 $q = "SELECT* from noticeboard where status='Active'";
-                               $query = mysqli_query($con,$q);
+                           <tbody id='view'>
 
-                               if($query){
-                                 while($result = mysqli_fetch_array($query)){
-                                   ?>
-                                   <tr>
-                                     <td><?php echo $result['date'] ?></td>
-                                     <td><?php echo $result['title'] ?></td>
-                                     <td><?php echo $result['message'] ?></td>
-                                     <td style="color: green;"><?php echo $result['status'] ?></td>
-                                   </tr>
-                               <?php
-                                 }
-                               }
-                                ?>
                            </tbody>
                          </table>
                       </div>
-
                     </div>
-
               </div>
           </div>
+          <!-- These two divs for sidebar -->
         </div>
     </div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="../js/jquery-3.3.1.min.js"></script>
     <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="../js/popper.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script> -->
     <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="../js/bootstrap.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -72,19 +66,8 @@
             });
         });
     </script>
-    <!--
-    <script type="text/javascript">
-		$(document).ready(function() {
-			setInterval(function () {
-				$('#notice').load('noticeboard.php #notice')
-			}, 3000);
-		});
-	</script>
- -->
   <!-- Jquery For table -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="../js/jquery.dataTables.min.js"></script>
   <!-- JavaScript for table -->
   <script type="text/javascript">
     $(document).ready(function() {
@@ -95,7 +78,16 @@
       } );
       } );
   </script>
-
+  <!-- Ajax for data view -->
+<script type="text/javascript">
+  $.ajax({
+    url: "noticedisplay.php",
+    type: "POST",
+    cache: false,
+    success: function(data){
+      $('#view').html(data);
+    }
+  });
+</script>
 </body>
-
 </html>

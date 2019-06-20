@@ -6,27 +6,7 @@
   if(!isset($_SESSION['username'])){
     header("location: logout.php");
   }
-   //echo "<pre>";
-   //print_r($_POST); die();
-
-  $msg = "";
-  if(isset($_POST["submit"]))
-  {
-   $date=trim($_POST["date"]);
-   $title=trim($_POST["title"]);
-   $message=trim($_POST["message"]);
-
-   $rs=mysqli_query($con,"insert into noticeboard (date,title,message) VALUES ('$date','$title','$message')") or die(mysqli_error());
-      	if($rs)
-      	{
-      		echo"<script> alert('Posted successfully')</script>";
-      	}
-      	else
-      	{
-      		echo"<script> alert('Unable to post')</script";
-      	}
-   }
-  ?>
+?>
 
 
 <!DOCTYPE html>
@@ -41,7 +21,7 @@
     <title>Noticeboard</title>
 
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/adminstyle.css">
     <!--Style for noticeboard-->
@@ -58,18 +38,41 @@
   <body>
     <!-- div of this include page are closed down below which shows extra two div -->
       <?php include 'sidebar_navbar1.php'; ?>
-
+      <!-- BreadCrumbs starts here -->
+      <div class="cssmenu">
+           <ul>
+             <li class="active"> <a href="#"><i class="fa fa-list-alt"></i>&nbsp; Noticeboard</a></li>
+             <li> <a href="adminpanel.php"><i class="fa fa-home"></i>&nbsp; Home</a></li>
+           </ul>
+        </div>
+      <!-- BreadCrumbs ends here -->
           <div id="noticeboard_wrapper" style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
             <header>
-              <h2 class="page_title">Create New Notice</h2>
+              <h3 style="color: teal; text-align: center;">Create New Notice</h3>
             </header>
+            <?php
+            $msg = "";
+            if(isset($_POST["submit"]))
+            {
+             $date=date('Y-m-d');
+             $title=trim($_POST["title"]);
+             $message=trim($_POST["message"]);
+
+             $rs=mysqli_query($con,"INSERT into noticeboard (date,title,message) VALUES ('$date','$title','$message')");
+                	if($rs)
+                	{
+                    ?>
+                    <div class="alert alert-success" id='success'>
+                      <h5 style="text-align: center;">Notice Successfully Published.</h5>
+                    </div>
+                    <?php
+                   	}
+             }
+             mysqli_close($con);
+             ?>
             <div class="content-inner">
               <div class="form-wrapper">
                 <form method="post">
-                  <div class="form-group">
-                    <label>Date</label>
-                    <input type="date" class="form-control" name="date">
-                  </div>
                   <div class="form-group">
                     <label>Title</label>
                     <input type="text" class="form-control" name="title" placeholder="Title...">
@@ -82,7 +85,7 @@
                     </div>
                   </div>
                   <div class="clearfix">
-                    <button type="submit" name="submit" class="btn btn-primary pull-right">Publish</button>
+                    <button type="submit" name="submit" class="btn btn-primary pull-right mt-1">Publish</button>
                   </div>
                 </form>
               </div>
@@ -100,6 +103,12 @@
            $("#editor").editor({
                uiLibrary: 'bootstrap4'
            });
+       });
+       //script for alert message
+       $(document).ready(function(){
+       setTimeout(function() {
+         $('#success').fadeOut('slow');
+       }, 2000);
        });
 </script>
 

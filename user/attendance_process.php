@@ -1,49 +1,50 @@
 <?php
-require_once('dbconnection.php');
-session_start();
-if(isset($_POST['attend']))
-  {
-    if(empty($_POST['attendance']) || empty($_POST['emp_id'])){
-      header("location:index.php?Empty1= Please Fill in the Blanks");
-    }
-    else
-    {
-      $date = date('Y-m-d');
-      date_default_timezone_set('Asia/Kolkata');
-      $time = date('H:i:sa');
-      $attendance = $_POST['attendance'];
-      $emp_id=$_POST['emp_id'];
-      $status = $_POST['working'];
-      $status1 = $_POST['not_working'];
-      if($attendance == 'In'){
-        $query = "INSERT INTO attendance (emp_id,date,time_in,status) VALUES('$emp_id','$date','$time','$status')";
-        $result=mysqli_query($con,$query);
-        if($result)
-        {
-          // $_SESSION['User']=$_POST['username'];
-          // header("location:userpanel.php");
-          header("location:index.php?Empty2= Time In, Successfull");
-        }
-        else {
-          header("location:index.php?Empty1= Incorrect Username or Password");
-        }
-      }
-      if($attendance == 'Out'){
-        $query = "UPDATE attendance SET time_out='$time', status='$status1' WHERE emp_id='$emp_id' AND date='$date'" ;
-        $result=mysqli_query($con,$query);
-        if($result)
-        {
-          // $_SESSION['User']=$_POST['username'];
-          // header("location:userpanel.php");
-          header("location:index.php?Empty2= Time oUT, Successfull");
-        }
-        else {
-          header("location:index.php?Empty1= Incorrect Username or Password");
+  include 'dbconnection.php';
+  session_start();
+    $emp_id=$_POST['emp_id'];
+    date_default_timezone_set('Asia/Kolkata');
+    $time = date('H:i:s');
+    $date = date('Y-m-d');
+    $attendance = $_POST['attendance'];
+    $status = '0';
+    //echo $date."/".$emp_id."/".$time."/".$attendance."/".$status;
+    if($attendance=='In'){
+      $sql = mysqli_query($con,"SELECT * FROM attendance WHERE emp_id='$emp_id' AND date='$date'");
+      $nums = mysqli_num_rows($sql);
+      if($nums == 1){
+        ?>
+        <h6>Already! Time in</h6>
+        <?php
+      }else {
+        $sql1 = mysqli_query($con,"INSERT INTO attendance(emp_id,date,time_in,status) values('$emp_id','$date','$time','$status')");
+        if($sql1){
+          ?>
+          <h6 style="color: green;">Time in, Successfully</h6>
+          <?php
+        }else {
+          ?>
+          <h6 style="color: red;">Incorrect Username...</h6>
+          <?php
         }
       }
+    }elseif($attendance=='Out'){
+      $sql2 = mysqli_query($con,"SELECT emp_id,date FROM attendance WHERE emp_id='$emp_id' AND date='$date'");
+      if(mysqli_fetch_array($sql2)){
+        $sql3 = mysqli_query($con,"UPDATE attendance SET time_out='$time',status='1' WHERE emp_id='$emp_id' AND date='$date'");
+        if($sql3){
+          ?>
+          <h6 style="color: green;">Successfully! Time Out</h6>
+          <?php
+        }else{
+          ?>
+          <h6 style="color: red;">Could not Time Out</h6>
+          <?php
+        }
+      }else{
+        ?>
+        <h6 style="color: red;">Incorrect Username...</h6>
+        <?php
+      }
     }
-  }
-  else {
-    echo "Not Working";
-  }
+    mysqli_close($con);
  ?>

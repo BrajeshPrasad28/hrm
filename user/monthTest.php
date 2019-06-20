@@ -1,309 +1,434 @@
 <?php
-   include('dbconnection.php');
+   include 'DBconnection.php';
+   include 'sidebar_and_header.php';
+   $emp_id=$_SESSION['User'];
+   date_default_timezone_set('Asia/Kolkata');
+   $date = date('Y-m-d');
 
    ?>
-<?php include 'sidebar_and_header1.php';?>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/daterangepicker.min.css">
 <div class="cssmenu">
    <ul>
-      <li class="active"><a href="attendance_enquiry.php">Attendance</a></li>
+      <li class="active"><a href="#">Apply Leave</a></li>
+      <li><a href="#">Leave</a></li>
       <li><a href="userpanel.php"><i class="fa fa-home"></i> Home</a></li>
    </ul>
 </div>
 <div class="card" style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
-   <div class="card-content">
-      <header>
-         <h2 class="page_title">Month Wise Attendance</h2>
-      </header>
-      <hr>
-      <div class="row ml-4">
-         <div class="text-center">
-            <form method="post">
-               <select class="btn" name="month" id='month' style="border: 1px solid black; border-radius: 0.25rem 0.25rem 0.25rem 0.25rem;" required>
-                  <option value="" hidden>Select Month</option>
-                  <?php
-                     $months = array(1 => 'Jan.', 2 => 'Feb.', 3 => 'Mar.', 4 => 'Apr.', 5 => 'May', 6 => 'Jun.', 7 => 'Jul.', 8 => 'Aug.', 9 => 'Sep.', 10 => 'Oct.', 11 => 'Nov.', 12 => 'Dec.');
-                     $transposed = array_slice($months, date('n'), 12, true) + array_slice($months, 0, date('n'), true);
-                     $last8 = array_reverse(array_slice($transposed, -8, 12, true), true);
-                     foreach ($months as $num => $name) {
-                     printf('<option value="%u">%s</option>', $num, $name);
+   <form id="leaveform" method="post" name="leaveform">
+     <div class="alert alert-success alert-dismissible" id="success" style="display:none;">
+   	  <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+   	</div>
+      <div class="row">
+         <div class=" ml-5" id='1'>
+            <div class="row ml-3 mt-3">
+               <div>
+                  <label for="leave">Leave Type</label>
+               </div>
+               <?php
+                  //query for retrieving employee's gender
+                  $sql = "SELECT gender FROM employees WHERE  emp_id='$emp_id'";
+                  $result = mysqli_query($con,$sql);
+                  while($row = mysqli_fetch_array($result)){
+                    $gender = $row['gender'];
+                  }
+                  //*********************************************
+                  // this part is calculation of leave balance of employee
+                  $sql3 = "SELECT * FROM emp_leave where emp_id='$emp_id' and status='1'";
+                  $result3 = mysqli_query($con,$sql3);
+                  $from_date_emergency = array(); $to_date_emergency = array(); $emergency_total = 0;
+                  $from_date_medical = array(); $to_date_medical = array(); $medical_total = 0;
+                  $from_date_Maternity = array(); $to_date_Maternity = array(); $Maternity_total = 0;
+                  $from_date_educational = array(); $to_date_educational = array(); $educational_total = 0;
+                  $from_date_casual = array(); $to_date_casual = array(); $casual_total = 0;
+                  while($row3 = mysqli_fetch_array($result3)){
+
+                    if($row3['leave_id']==1){
+                      $from_date_emergency[] = $row3['from_date'];
+                      $to_date_emergency[] = $row3['to_date'];
+                    }
+
+                    if($row3['leave_id']==2){
+                      $from_date_medical[] = $row3['from_date'];
+                      $to_date_medical[] = $row3['to_date'];
+                    }
+
+                    if($row3['leave_id']==3){
+                      $from_date_Maternity[] = $row3['from_date'];
+                      $to_date_Maternity[] = $row3['to_date'];
+                    }
+
+                    if ($row3['leave_id']==4) {
+                      $from_date_educational[] = $row3['from_date'];
+                      $to_date_educational[] = $row3['to_date'];
+                    }
+
+                    if ($row3['leave_id']==5) {
+                      $from_date_casual[] = $row3['from_date'];
+                      $to_date_casual[] = $row3['to_date'];
+                    }
+
+                   }
+                   $bday1 = array();
+                   $today1 = array();
+                   for($i=0;$i<count($from_date_emergency);$i++){
+                     $bday1[$i] = new DateTime($from_date_emergency[$i]);
+                     $today1[$i] = new Datetime(date($to_date_emergency[$i]));
+                     $diff1 = $bday1[$i]->diff($today1[$i]);
+                     $emergency_total = $diff1->d;
+                   }
+                   // this part is for medical leave granted calculation
+                   $bday2 = array();
+                   $today2 = array();
+                   for($i=0;$i<count($from_date_medical);$i++){
+                     $bday2[$i] = new DateTime($from_date_medical[$i]);
+                     $today2[$i] = new Datetime(date($to_date_medical[$i]));
+                     $diff2 = $bday2[$i]->diff($today2[$i]);
+                     $medical_total = $diff2->d;
+                   }
+                   // this part is for Maternity leave
+                   $bday3 = array();
+                   $today3 = array();
+                   for($i=0;$i<count($from_date_Maternity);$i++){
+                     $bday3[$i] = new DateTime($from_date_Maternity[$i]);
+                     $today3[$i] = new Datetime(date($to_date_Maternity[$i]));
+                     $diff3 = $bday3[$i]->diff($today3[$i]);
+                     $Maternity_total = $diff3->d;
+                   }
+                   //this part is for edcucational leave
+                   $bday4 = array();
+                   $today4 = array();
+                   for($i=0;$i<count($from_date_educational);$i++){
+                     $bday4[$i] = new DateTime($from_date_educational[$i]);
+                     $today4[$i] = new Datetime(date($to_date_educational[$i]));
+                     $diff4 = $bday4[$i]->diff($today4[$i]);
+                     $educational_total = $diff4->d;
+                     // $educational_total = $educational_total+(strtotime($to_date_educational[$i])-strtotime($from_date_educational[$i]))/(24*60*60);
+
+                   }
+                   //this part is for casual leave
+                   $bday5 = array();
+                   $today5 = array();
+                   for($i=0;$i<count($from_date_casual);$i++){
+                     $bday5[$i] = new DateTime($from_date_pregnancy[$i]);
+                     $today5[$i] = new Datetime(date($to_date_pregnancy[$i]));
+                     $diff5 = $bday5[$i]->diff($today5[$i]);
+                     $casual_total = $diff5->d;
+                     // $casual_total = $casual_total+(strtotime($to_date_casual[$i])-strtotime($from_date_casual[$i]))/(24*60*60);
+
+                   }
+                   //****************************************
+                   // this part is for displing leave balance of employee
+                   if($gender=='Male'){
+                      $sql2 = "SELECT * FROM leave_details where eligible_for='MF'";
+                   }
+                   elseif($gender=='Female'){
+                      $sql2 = "SELECT * FROM leave_details";
+                   }
+
+                  $result2 = mysqli_query($con,$sql2);
+                  $emergency_balance = 0; $emergency_available = 0;
+                  $medical_balance = 0; $medical_available = 0;
+                  $Maternity_balance = 0; $Maternity_available = 0;
+                  $educational_balance = 0; $educational_available = 0;
+                  $casual_balance = 0; $casual_available = 0;
+                  $leavetype = array();
+                  while($row2 = mysqli_fetch_array($result2)){
+
+                    $leavetype[] = $row2['leave_type'];
+
+                    if($row2['leave_type']=='Emergency'){
+                     $emergency_balance = $row2['leave_balance'];
+                     $emergency_available = ($emergency_balance-$emergency_total);
+                   }
+                   if($row2['leave_type']=='Medical'){
+                     $medical_balance = $row2['leave_balance'];
+                     $medical_available = ($medical_balance-$medical_total);
+                   }
+
+                   //********Start1 This is part depends on male and female*************
+                   if($gender=='Female'){
+                   if($row2['leave_type']=='Maternity' /*&& $gender == 'Female'*/){
+                       $Maternity_balance = $row2['leave_balance'];
+                       $Maternity_available = ($Maternity_balance-$Maternity_total);
                      }
-                     ?>
-               </select>
-               <select class="btn" name="year" id='year' style="border: 1px solid black; border-radius: 0.25rem 0.25rem 0.25rem 0.25rem; position: absolute; z-index: 100;" onmousedown="if(this.options.length>5){this.size=5;}"  onchange='this.size=0;' onblur="this.size=0;" required>
-                  <option value=""hidden>Year</option>
-                  <?php
-                     for($i=2018; $i<=2031; $i++){
-                     $selected = ($i==$year)?'selected':'';
-                     echo "<option value='".$i."' ".$selected.">".$i."</option>";
+                   }
+                   //*******************End1****************************************
+                   if($row2['leave_type']=='Educational'){
+                     $educational_balance = $row2['leave_balance'];
+                     $educational_available = ($educational_balance-$educational_total);
+                   }
+                   if($row2['leave_type']=='Casual'){
+                     $casual_balance = $row2['leave_balance'];
+                     $casual_available = ($casual_balance-$casual_total);
                      }
-                     ?>
-               </select>
-               <button type="submit" class="btn btn-primary" name="submit" id='submit' style="margin-left: 90px;">Search <i class="fa fa-search" aria-hidden="true"></i></button>
-            </form>
+                 }
+                  //*********************************************
+                  //query for retrieving leave type
+                  if($gender=='Male'){
+                     $sql1 = "SELECT leave_id,leave_type, leave_balance FROM leave_details where eligible_for='MF'";
+                  }
+                  elseif($gender=='Female'){
+                     $sql1 = "SELECT * FROM leave_details";
+                  }
+                  $result1 = mysqli_query($con,$sql1);
+
+                   ?>
+               <div class="ml-5" style="width: 60%;">
+                  <select name="leavetype" id="leavetype" class='leave_Type' style="background-color: white;border-top: none;border-left: none; border-right: none;">
+                     <option value="" selected disabled hidden>Select Leave Type</option>
+                     <?php
+                        while($row1 = mysqli_fetch_array($result1)){
+                          if($row1['leave_id']==1){
+                            $emergency = $row1['leave_type'];
+                          }
+                          elseif($row1['leave_id']==2){
+                            $medical = $row1['leave_type'];
+                          }
+                          elseif($row1['leave_id']==3){
+                            $maternity = $row1['leave_type'];
+                          }
+                          elseif($row1['leave_id']==4){
+                            $educational = $row1['leave_type'];
+                          }
+                          elseif($row1['leave_id']==5){
+                            $casual = $row1['leave_type'];
+                          }
+                        }
+                        ?>
+                     <option data-id='<?php echo $emergency_available; ?>' value="1"><?php echo $emergency; ?></option>
+                     <option data-id='<?php echo $medical_available; ?>' value="2"><?php echo $medical; ?></option>
+                     <?php if($gender=='Female'){ ?>
+                     <option data-id='<?php echo $Maternity_available; ?>' value="3"><?php echo $maternity?></option>
+                     <?php } ?>
+                     <option data-id='<?php echo $educational_available; ?>' value="4"><?php echo $educational; ?></option>
+                     <option data-id='<?php echo $casual_available?>' value="5"><?php echo $casual; ?></option>
+                  </select>
+               </div>
+            </div>
+            <div class="row ml-3 mt-3">
+               <div>
+                  <label for="fdate">From Date</label>
+               </div>
+               <form action="javascript: void(0);"><!--This form is only for date range picker -->
+               <div class="ml-5">
+                  <input type="text" name="value_from_start_date" id='value_from_start_date' data-datepicker="separateRange" placeholder="yyy-mm-dd" style="width: auto; border-radius: 0; border: 1px solid #ccc; float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;">
+               </div>
+               <div class="ml-5">
+                  <label for="todate">To Date</label>
+               </div>
+               <div class="ml-5">
+                  <input input type="text" name="value_from_end_date" id='value_from_end_date' data-datepicker="separateRange" placeholder="yyyy-mm-dd" style="width: auto; border-radius: 0; border: 1px solid #ccc;  float: left; margin: 0; padding: 0; border-top: 0px;border-left: 0px; border-right: 0px;">
+               </div>
+             </form>
+            </div>
+            <div class="row ml-3 mt-3">
+               <div class="">
+                  <label for="description">Description</label>
+               </div>
+               <div class="ml-5" style="width: 60%;">
+                  <textarea id="description" name="description" placeholder="Write something.." style="height:55px;width: auto;"></textarea>
+               </div>
+            </div>
+           <input type="hidden" name="date" id='date' value="<?php echo $date;?>">
+           <input type="hidden" name="status" id='status' value="0">
+           <input type="hidden" name="emp_id" id='emp_id' value="<?php echo $emp_id; ?>">
+            <div class="row" style="padding: 30px;">
+               <input type="button" name="save" class="btn btn-success" value="Apply" id="butsave">
+            </div>
+         </div>
+         <div style="width: 10%;"></div>
+         <div class="mt-3 mb-4" id='2'>
+            <h3>Leave Balance</h3>
+            <table class="table table-bordered">
+               <thead>
+                  <th>Leave Name</th>
+                  <th>Balance</th>
+               </thead>
+               <tbody>
+                 <?php
+                 if($gender=='Female'){
+                   $leavetype1 = array_values($leavetype);
+                 }else{
+                   $leavetype1 = array_values($leavetype);
+                 }
+                  for($i=0;$i<count($leavetype1);$i++)
+                  {
+                   ?>
+                  <tr>
+                     <td><?php echo $leavetype1[$i]; ?> </td>
+                     <td>
+                      <?php
+                      if($gender=='Male'){
+                        if($i==0){
+                          echo $emergency_available." / ".$emergency_balance;
+                        }elseif($i==1){
+                          echo $medical_available." / ".$medical_balance;
+                        }elseif($i==2){
+                          echo $educational_available." / ".$educational_balance;
+                        }elseif($i==3){
+                          echo $casual_available." / ".$casual_balance;
+                        }
+                      }else {
+                        if($i==0){
+                          echo $emergency_available." / ".$emergency_balance;
+                        }elseif($i==1){
+                          echo $medical_available." / ".$medical_balance;
+                        }elseif($i==2){
+                          echo $Maternity_available." / ".$Maternity_balance;
+                        }elseif($i==3){
+                          echo $educational_available." / ".$educational_balance;
+                        }elseif($i==4){
+                          echo $casual_available." / ".$casual_balance;
+                        }
+                      }
+
+                      ?>
+                    </td>
+                  </tr>
+                <?php }
+                  mysqli_close($con);
+                 ?>
+               </tbody>
+            </table>
          </div>
       </div>
-      <?php
-         if(isset($_POST['submit'])){
-           $abd = 0;//abd=absent date
-           $month = $_POST['month'];
-           $year = $_POST['year'];
-           //for finding absent date
-           $start_date = "01-".$month."-".$year;
-           $start_time = strtotime($start_date);
-           $end_time = strtotime("+1 month", $start_time);
-           for($i=$start_time; $i<$end_time; $i+=86400)
-           {
-              $list[] = date('Y-m-d', $i);
-           }
-
-           //Query for present date
-           $sdate = $year."-".$month."-01";
-           $edate = $year."-".$month."-31";
-           $emp_id=$_SESSION['User'];
-           $sql = "SELECT DISTINCT date FROM attendance WHERE  date BETWEEN '$sdate' AND '$edate' AND emp_id='$emp_id'";
-           $result = mysqli_query($con,$sql);
-           $date = array();
-         ?>
-      <?php
-         $months  = array("","January","February","March","April","May","June","July","August","September","October","November","December");
-         //echo $months[$month];
-         ?>
-         <div class="month_Wise mt-3 ml-3 mr-3 mb-3">
-         <div id='month_Wise'>
-           <center><strong style="font-size: 20px"><?php echo $months[$month]."   ".$year; ?></strong></center>
-        <div class="content-inner">
-          <!-- Php Test Area -->
-          <?php
-             while($row = mysqli_fetch_array($result))
-             {
-               $date[] = $row['date'];
-               // echo $row['date']."<br>";
-             }
-               // if(count($date) == 0){
-               //   echo "No Records Found!";
-               // }
-               ?>
-
-          <table class="table table-bordered table-stripped">
-            <thead>
-              <tr>
-                <th style="background-color: darkgrey;">Date</th>
-                <th style="background-color: darkgrey;">Present</th>
-                <th style="background-color: darkgrey;">Absent</th>
-                <th style="background-color: darkgrey;">Works on Holiday</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-             //Absent Calculation
-             $count_sun=0;
-             $sundayComp = array();
-
-             $saturday_count = 0;
-             $second_saturday = array();
-             $fourth_saturday = array();
-             if(count($date)!=0){
-               $absent_date1 = $list;
-               $f1 = $absent_date1[0];//error for sunday where date is 1
-               $fend = end($absent_date1);
-               if(($month == 1)||($month == 2)||($month == 3)||($month == 4)||($month == 5)||($month == 6)||($month == 7)||($month == 8)||($month == 9)){
-                  $x=$year."-0".$month."-00";//$f1;
-               }
-               else{
-                 $x=$year."-".$month."-00";
-               }
-
-
-               while($x<$fend)
-              {
-                $a=strtotime($x);
-                if($month==10){
-                  $b=$a+100000;//this parts is only for october
-                }else{
-                  $b=$a+(24*60*60);//this is for all the months exept october
-                }
-                $f2=date("Y-m-d",$b);
-                $day=date("D",$b);
-                if($day == "Sun")
-                {
-                 $sundayComp[] = $f2;
-                }
-                if($day == "Sat")
-                {
-                  $saturday_count++;
-                  if($saturday_count == 2){
-                    $second_saturday[] = $f2;//storing second saturday
-                  }
-                  if($saturday_count == 4){
-                    $fourth_saturday[] = $f2;//stroring fourth saturday
-                  }
-                }
-                $x=$f2;
-              }
-             }
-             //*******************************
-              $a_d = array();//$fourth saturday
-              $sun_com = array();
-              $sat_2nd = array();
-              if(count($date)!=0){
-               $absent_date = array_diff($list,$date);
-               //excluding sundays, 2nd saturday and 4th saturday for absent date
-               $sun_com = array_diff($absent_date,$sundayComp);
-               $sat_2nd = array_diff($sun_com,$second_saturday);
-               $a_d = array_diff($sat_2nd,$fourth_saturday);
-               // $a_d = array_diff($absent_date,$sundayComp);
-               $abd = count($a_d);
-               $absent = array_values($a_d);//rearranging array
-
-             }
-
-               //for calculating works on holiday
-               $works_on_holiday = array();
-               //$sunday = array_intersect($sundayComp,$date);
-               $works_on_sun = array_intersect($sundayComp,$date);
-               $works_on_sat2nd = array_intersect($second_saturday,$date);
-               $works_on_sat4th = array_intersect($fourth_saturday,$date);
-               $sunday = array_merge($works_on_sun,$works_on_sat2nd,$works_on_sat4th);
-
-               $total_works_on_holiday = 0;
-               $total_works_on_holiday = count($sunday);
-               $works_on_holiday = array_values($sunday);//rearranging array
-
-              //Calculatinng date
-               $count1=0;
-               $count = count($list);
-               $count1 = count($date);
-               $count2 = count($works_on_holiday);
-               $sub = $count-$count1;
-               $sub1 = $count-$abd;
-               $sub2 = $count-$count2;
-               $date1 = array_values($date);//rearranging array index
-
-
-               //Pushing valuse(date) to adjust the array length with length of month
-               //This part is for present date
-               if(count($date)!=0)
-               {
-                 for($i=0;$i<$sub;$i++)
-                 {
-                   array_push($date1,$i);
-                 }
-                 //This part is for absent date
-                 for($i=0;$i<$sub1;$i++)
-                 {
-                   array_push($absent,$i);
-                 }
-                 //This part is for works on holidays
-                 for($i=0;$i<$sub2;$i++)
-                 {
-                   array_push($works_on_holiday,$i);
-                 }
-
-               }
-
-               for($i=0;$i<$count;$i++){
-                  echo "<tr>";
-                  echo "<td>".$list[$i]."</td>";?>
-                  <!-- Present date -->
-                  <td>
-                    <?php
-                       for($j=0;$j<count($date1);$j++)
-                       {
-                         if(strtotime($list[$i])==strtotime($date1[$j]))
-                         {
-                           echo $date1[$j];
-                         }
-
-                       }
-                      ?>
-                  </td>
-                  <!-- Absent Date -->
-                  <td>
-                    <?php
-                     for($j=0;$j<count($a_d);$j++)
-                       {
-                         if(strtotime($list[$i])==strtotime($absent[$j]))
-                         {
-                           echo $absent[$j];
-                        }
-
-                       }
-                      ?>
-                  </td>
-                  <!-- Work on Holidays -->
-                  <td>
-                    <?php
-                     for($j=0;$j<count($works_on_holiday);$j++)
-                       {
-                         if(strtotime($list[$i])==strtotime($works_on_holiday[$j]))
-                         {
-                           echo $works_on_holiday[$j];
-                        }
-
-                       }
-                      ?>
-                  </td>
-                 <?php
-                  echo "</tr>";
-                }
-                ?>
-
-            </tbody>
-            <tfoot>
-              <tr>
-                <td style="background-color: darkgrey"></td>
-                <td style="font-weight: bold; background-color: darkgrey">Total:&nbsp;<?php  echo " ".$count1;?></td>
-                <td style="font-weight: bold; background-color: darkgrey">Total:&nbsp;<?php echo " ".$abd; ?></td>
-                <td style="font-weight: bold; background-color: darkgrey">Total:&nbsp;<?php echo " ".$total_works_on_holiday ?></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-         </div>
-
-           <div id="editor"></div>
-           <button type="button" class="btn btn-secondary ml-5 mb-3" onclick="printDiv('month_Wise')"><i class="fa fa-file-pdf-o"></i> Print</button>
-           <?php
-            }
-            mysqli_close($con);
-          ?>
-       </div>
-   </div>
+   </form>
 </div>
 </div>
 </div>
-<!-- jQuery CDN - Slim version  -->
+<!-- jQuery CDN - Slim version (=without AJAX) -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <!-- Popper.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<!-- CDN link for PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
-<!-- Jquery For table -->
-<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> -->
-<!-- <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script> -->
-<!-- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript">
+ // for sidebar
    $(document).ready(function () {
-     //script for sidebarCollapse
        $('#sidebarCollapse').on('click', function () {
            $('#sidebar').toggleClass('active');
        });
    });
-</script>
+   //for dropdown menu
+   $(document).find('textarea').each(function () {
+   var offset = this.offsetHeight - this.clientHeight;
 
-<!-- script for pdf -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
-<!-- Print Particular Div -->
+   $(this).on('keyup input focus', function () {
+       $(this).css('height', 'auto').css('height', this.scrollHeight + offset);
+     });
+   });
+</script>
+<!-- data insert using ajax for apply leave -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
-		function printDiv(printDiv){
-			var printContents = document.getElementById(printDiv).innerHTML;
-			var originalContents = document.body.innerHTML;
-			document.body.innerHTML = printContents;
-			window.print();
-			document.body.innerHTML = originalContents;
+$(document).ready(function() {
+	$('#butsave').on('click', function() {
+		$("#butsave").attr("disabled", "disabled");
+		var leavetype = $('#leavetype').val();
+		var value_from_start_date = $('#value_from_start_date').val();
+		var value_from_end_date = $('#value_from_end_date').val();
+		var description = $('#description').val();
+    var date = $('#date').val();
+    var status = $('#status').val();
+    var emp_id = $('#emp_id').val();
+		if(leavetype!="" && value_from_start_date!="" && value_from_end_date!="" && description!=""){
+			$.ajax({
+				url: "processTest.php",
+				type: "POST",
+				data: {	leavetype: leavetype,	value_from_start_date: value_from_start_date,	value_from_end_date: value_from_end_date,	description: description, date: date, status: status, emp_id: emp_id},
+				// cache: false,
+				success: function(data) {
+
+											$("#butsave").removeAttr("disabled");
+                      $('#success').fadeIn().html(data);
+											$('#success').html('Leave has been applied Successfully');
+                  				setTimeout(function() {
+                  					$('#success').fadeOut("slow");
+                  				}, 2000 );
+											$('#leaveform').trigger('reset');
+
+                  }
+			});
 		}
-	</script>
+		else{
+			alert('Please fill all the field !');
+		}
+	});
+});
+</script>
+<!-- Testing area 51 -->
+<!-- Script for select box starts here  -->
+<script src="../css/SelectBox.js"></script>
+<script>
+   $('select').SelectBox();
+</script>
+<!-- Script for select box ends here -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.24/daterangepicker.min.js"></script>
+<!-- Script for Date range picker -->
+<script>
+  $("select.leave_Type").change(function(){
+    var leave = $(this).children("option:selected").data('id');
+    //var leave = $(this).children("option:selected").val();
+    alert("You have selected the leve id - " + leave);
+
+    var separator = ' - ', dateFormat = 'YYYY-MM-DD';
+    var options = {
+        autoUpdateInput: false,
+        autoApply: true,
+         dateLimit: {
+            days: leave
+        },
+        locale: {
+            format: dateFormat,
+            separator: separator
+            //applyLabel: '確認',
+            //cancelLabel: '取消'
+        },
+        minDate: moment().add(1, 'days'),
+        maxDate: moment().add(359, 'days'),
+        opens: "right"
+    };
+
+
+        $('[data-datepicker=separateRange]')
+            .daterangepicker(options)
+            .on('apply.daterangepicker' ,function(ev, picker) {
+                var boolStart = this.name.match(/value_from_start_/g) == null ? false : true;
+                var boolEnd = this.name.match(/value_from_end_/g) == null ? false : true;
+
+                var mainName = this.name.replace('value_from_start_', '');
+                if(boolEnd) {
+                    mainName = this.name.replace('value_from_end_', '');
+                    $(this).closest('form').find('[name=value_from_end_'+ mainName +']').blur();
+                }
+
+                $(this).closest('form').find('[name=value_from_start_'+ mainName +']').val(picker.startDate.format(dateFormat));
+                $(this).closest('form').find('[name=value_from_end_'+ mainName +']').val(picker.endDate.format(dateFormat));
+
+                $(this).trigger('change').trigger('keyup');
+            })
+            .on('show.daterangepicker', function(ev, picker) {
+                var boolStart = this.name.match(/value_from_start_/g) == null ? false : true;
+                var boolEnd = this.name.match(/value_from_end_/g) == null ? false : true;
+                var mainName = this.name.replace('value_from_start_', '');
+                if(boolEnd) {
+                    mainName = this.name.replace('value_from_end_', '');
+                }
+
+                var startDate = $(this).closest('form').find('[name=value_from_start_'+ mainName +']').val();
+                var endDate = $(this).closest('form').find('[name=value_from_end_'+ mainName +']').val();
+
+                $('[name=daterangepicker_start]').val(startDate).trigger('change').trigger('keyup');
+                $('[name=daterangepicker_end]').val(endDate).trigger('change').trigger('keyup');
+
+                if(boolEnd) {
+                    $('[name=daterangepicker_end]').focus();
+                }
+            });
+    });
+</script>
 </body>
 </html>

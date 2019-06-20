@@ -1,12 +1,8 @@
 <?php
-   $con=mysqli_connect('localhost','root','','hrm');
-    if(!$con)
-     {
-        die("dbconnection error".mysqli_error());
-     }
-    // $db_selected=mysqli_select_db($con,'bbms');
-    // if (!$db_selected)
-    //  {
-    //     die("db selection error!".mysqli_error());
-    //  }
+$con = mysqli_connect("localhost","root","","hrm");
+// Check connection
+if (mysqli_connect_errno())
+  {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  }
 ?>

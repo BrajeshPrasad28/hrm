@@ -19,19 +19,17 @@
               }
               ?>
         </select>
-        <button type="submit" class="btn btn-primary" name="submit" id='submit' style="margin-left: 91px;">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+        <button type="submit" class="btn btn-primary submit" name="submit" id='<?php echo $emp_id; ?>' style="margin-left: 95px;">Search <i class="fa fa-search" aria-hidden="true"></i></button>
      </form>
      <div id="showYearWise">
 
      </div>
-     <script src="js/jquery.min.js"></script>
+     <script src="../js/jquery-3.3.1.min.js"></script>
      <script>
-         $(document).ready(function() {
-             $("#submit").click(function() {
-
-                var id = '<?php echo $emp_id;?>';
-                var year = $('#year').val();
-                if(year!='')
+     $(document).on('click', '.submit', function() {
+         var id = $(this).attr("id");
+         var year = $('#year').val();
+         if(year!='')
                 {
                   $.ajax({
                       type: 'post',
@@ -54,7 +52,6 @@
                   alert("Year Field cannont be empty");
                 }
                  return false;
-             });
          });
      </script>
 
