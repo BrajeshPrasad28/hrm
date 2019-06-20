@@ -126,9 +126,9 @@
          <div class="modal-dialog modal-dialog-centered modal-md">
             <div class="modal-content">
                <!-- Modal Header -->
-               <div class="modal-header">
-                  <h4 class="modal-title" style="color: teal;">Update Employee Data</h4>
-                  <button type="button" class="close" data-dismiss="modal" onClick="window.location.reload();">&times;</button>
+               <div class="modal-header" style="background:black;">
+                  <h4 class="modal-title" style="color: white;">Update Employee Data</h4>
+                  <button type="button" class="close"  style="color:white;" data-dismiss="modal" onClick="window.location.reload();">&times;</button>
                </div>
                <!-- Modal body -->
                <div class="modal-body" id='show'>

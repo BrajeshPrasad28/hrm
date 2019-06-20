@@ -15,8 +15,8 @@ if(isset($_POST['ide'])){
   $d_id = $_POST['d_name'];
   $schedule_id = $_POST['schedule_id'];
   $member = $_POST['member'];
-  $password = hash('gost',md5($_POST["pass"]));
- $sql = mysqli_query($con,"UPDATE employees SET job_type='$job_type',first_name='$first_name',last_name='$last_name',dob='$dob',gender='$gender',address='$address',phone='$contact',email='$email',d_name='$d_id',schedule_id='$schedule_id',created_on='$member',password='$password' WHERE emp_id='$emp_id'");
+  // $password = hash('gost',md5($_POST["pass"]));
+ $sql = mysqli_query($con,"UPDATE employees SET job_type='$job_type',first_name='$first_name',last_name='$last_name',dob='$dob',gender='$gender',address='$address',phone='$contact',email='$email',d_name='$d_id',schedule_id='$schedule_id',created_on='$member' WHERE emp_id='$emp_id'");
 
  if($sql){
     ?>

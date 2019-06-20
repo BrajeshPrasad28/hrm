@@ -138,13 +138,12 @@
         <p class="text-danger text-center" style="padding: 0px 0px 0px;"></p>
           <table cellpadding="0" cellspacing="1px" style="width:100%; height:424px;">
             <tr><td class="lefttd">Username ID:</td><td><?php echo $emp_id; ?></td></tr>
-            <tr><td class="lefttd"> First Name:</td><td><?php echo $first_name; ?></td></tr>
-            <tr><td class="lefttd">Last Name:</td><td><?php echo $last_name; ?></td></tr>
+            <tr><td class="lefttd"> First Name:</td><td><?php echo $first_name; ?> <?php echo $last_name; ?></td></tr>
             <tr><td class="lefttd">Created On:</td><td><?php echo $created_on; ?></td></tr>
            <tr><td class="lefttd">Uplode Picture</td><td><input type="file" id="photo" name="photo" / required></td></tr>
            <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
            <tr><td>&nbsp;</td>
-           <td><input type="submit" value="Update" name="submit" class="btn btn-primary" style="margin-top: -112px;">
+           <td><input type="submit" value="Update" name="submit" class="btn btn-info" style="margin-top: -112px;">
            </td></td></tr></table></div>
     </table>
   </form>

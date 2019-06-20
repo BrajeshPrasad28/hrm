@@ -129,16 +129,13 @@
                </div>
             </div>
          </div>
-         <div class="form-group">
-            <div class="row">
-               <label for="pass" class="col-sm-3 control-label">Birthdate</label>
-               <div class="col-sm-9">
-                  <input type="text" class="form-control" id="pass" name="pass" required>
-               </div>
-            </div>
-         </div>
          <?php } ?>
-         <input type="submit" id="update" class="btn btn-primary btn-md update" value="Update">
+
+         <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" onClick="window.location.reload();">Close</button>
+            <input type="submit" id="update" class="btn btn-primary btn-md update" value="Update" style="float:right;">
+         </div>
+
       </form>
       <div id="success1">
       </div>

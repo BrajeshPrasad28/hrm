@@ -27,16 +27,16 @@ $username = $_SESSION['username'];
      <style media="screen">
 
        .passchange{
-         background: #fff;
-         border-radius: 10px;
+         /* background: #fff; */
+         /* border-radius: 10px; */
          padding: 30px;
-         margin-top: 50px;
+         /* margin-top: 50px; */
        }
-       .chpass{
-         margin: 0px;
-         margin-bottom: 30px;
-         font-size: 20px;
-       }
+      .form-group{
+        margin-top: -5px;
+
+
+      }
      </style>
    </head>
 <!-- body starts here -->
@@ -53,44 +53,41 @@ $username = $_SESSION['username'];
  </div>
  <!-- /Bredcrumb -->
  <!-- Main Content starts here -->
- <div class="card" style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
-   <div class="mt-2 mb-2">
-     <h3 style="color: teal; text-align: center;">Change Password</h3>
-   </div>
-   <div id="success" style="display:none;">
-  </div>
- <form id='changepassword' name='changepassword' class="form-horizontal" method="post">
-   <input type="hidden" name="username" id='username' value="<?php echo $username; ?>">
-   <div class="ml-4 mt-3 mb-3">
-     <hr>
-     <div class="form-group row">
-      <label class="col-sm-2 control-label">Current Password</label>
-      <div class="col-sm-4">
-        <input type="password" class="form-control" id='current_pass' name='current_pass' onkeyup='check1();' required>
-      </div>
-     </div>
-     <div class="form-group row">
-       <label class="col-sm-2 control-label">New Password</label>
-       <div class="col-sm-4">
+ <div class="card">
+  <div class="container" style="height: 450px;">
+    <div class="header">
+    <h3><center style="font-weight: bolder; margin-top: 15px; color: teal;">Change Password</h3></center>
+    </div>
+    <br>
+   <div id="success" style="display:none;"></div>
+  <div class="col-sm-4 col-sm-offset-4" style="height:350px; width:350px; margin:auto; background-color:white; border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue;">
+    <div class="passchange" style="font-weight: bolder;">
+      <form id='changepassword' method="post" class="wrap" enctype="multipart/form-data">
+
+        <input type="hidden" name="username" id='username' value="<?php echo $username; ?>">
+
+        <div class="form-group">
+          <label for="password"> Current Password</label>
+          <input type="password" class="form-control" id='current_pass' name='current_pass' onkeyup='check1();' required>
+        </div>
+
+       <div class="form-group">
+         <label for="password"> New Password</label>
          <input type="password" class="form-control" id='new_pass' name="new_pass" onkeyup='check();' required>
        </div>
-     </div>
-     <div class="form-group row">
-       <label class="col-sm-2 control-label">Confirm New Password</label>
-       <div class="col-sm-4">
+       <div class="form-group">
+         <label for="password"> Confirm New Password</label>
          <input type="password" class="form-control" id='confirm_new_pass' name="confirm_new_pass" onkeyup='check();'  required>
+         <span id='message'></span>
        </div>
-       <span id='message'></span>
-     </div>
-     <div class="form-group">
-       <div class="col-sm-offset-3 col-sm-5">
-           <input type="button" name="save_btn" class="btn btn-success" value="Change Password" id="save_btn">
-       </div>
-     </div>
-     <hr>
-   </div>
+      <div class="form-group">
+       <input type="button" name="save_btn" class="btn btn-info" value="Change Password" id="save_btn" style="margin-left: 50px;">
+      </div>
  </form>
  </div>
+ </div>
+</div>
+</div>
 <!-- this two divs are belongs to include sidebar_navbar page -->
 </div>
 </div>
