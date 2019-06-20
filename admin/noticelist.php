@@ -72,7 +72,7 @@
             </header>
             <div class="content-inner">
               <table id="noticelist" class="table table-stripped table-hover table-bordered">
-                <thead style="background-color: #660066; color: white; font-weight: bold;">
+                <thead class="table-dark" style="color: white; font-weight: bold;">
                   <!-- <th>Id</th> -->
                   <th>Date</th>
                   <th>Title</th>

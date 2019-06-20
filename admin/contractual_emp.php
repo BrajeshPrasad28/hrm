@@ -83,7 +83,7 @@
             ?>
             <div class="content-inner">
                <table id="emplist" class="table table-stripped table-bordered order-column" style="width: 100%;">
-                  <thead style="background-color: #660066; color: white; font-weight: bold;">
+                  <thead class="table-dark" style="color: white; font-weight: bold;">
                      <th>Employee Id</th>
                      <th>Photo</th>
                      <th>Job Type</th>

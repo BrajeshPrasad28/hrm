@@ -62,13 +62,13 @@
          </header>
          <div class="content-inner">
             <table id="noticelist" class="table table-stripped table-bordered">
-               <thead style="background-color: #660066; color: white;">
+               <thead class="table-dark" style="color: white; font-weight: bold;">
                   <th>Name</th>
                   <th>Posting Date</th>
-                  <th>Form Date</th>
-                  <th>To Date</th>
-                  <th>Leave Type</th>
-                  <th>Leave Description</th>
+                  <th>Form</th>
+                  <th>To</th>
+                  <th>Type</th>
+                  <th>Description</th>
                   <th>Approved Date</th>
                </thead>
                <tbody>

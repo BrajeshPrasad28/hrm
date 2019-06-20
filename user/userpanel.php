@@ -19,55 +19,54 @@
                     <li class="active"><a href="#"><i class="fa fa-home"></i> Home</a></li>
                 </ul>
             </div>
-            <div style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue; background-color: #1fc8db;
-            background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);">
-              <h3 class="mt-2" style="text-align: center; color: darkblue;"><strong>Year:</strong>&nbsp;<?php echo $p_year; ?></h3>
+            <div style="border:2px solid aliceblue; box-shadow:4px 1px 20px cadetblue; background-color: white;">
+              <h3 class="mt-2" style="text-align: center; color: teal;"><strong>Year:</strong>&nbsp;<?php echo $p_year; ?></h3>
               <div class="container-fluid">
 
                 <div class="row mt-3 ml-3 mr-3 mb-3" >
                   <!-- Attendance Part -->
-                  <div class="col-sm-5 ml-2 mt-5 emp" style="border: 1px solid blue;">
-                    <h4 style="text-align:center; color: darkblue;">Attendance</h4>
-                    <hr style="border-color: black;">
+                  <div class="col-sm-5 ml-2 mt-5 emp" style="border: 3px solid darkseagreen; box-shadow: 1px 1px 11px teal; border-radius:15px; background: darkcyan; background: radial-gradient(#648880,  #123d32);">
+                    <h4 style="text-align:center; color: lightcyan;">Attendance</h4>
+                    <hr style="border-color: white;">
                     <div class="row ml-4">
-                      <a href="attendance_month.php" style="font-size: 18px; color: darkblue;"><i class="fa fa-calendar"></i> Month Wise</a>
+                      <a href="attendance_month.php" style="font-size: 18px;  color:    white;"><i class="fa fa-calendar"></i> Month Wise</a>
                     </div>
                     <div class="row ml-4">
-                      <a href="attendance_year.php" style="font-size: 18px; color: darkblue;"><i class="fa fa-calendar"></i> Year Wise</a>
+                      <a href="attendance_year.php" style="font-size: 18px;  color:    white;"><i class="fa fa-calendar"></i> Year Wise</a>
                     </div>
                   </div>
                   <div class="col-sm-1">
                   </div>
                   <!-- Leave Part -->
-                  <div class="col-sm-5 ml-2 mt-5 emp" style="border: 1px solid blue;">
-                    <h4 style="text-align:center; color: darkblue;">Leave</h4>
-                    <hr style="border-color: black;">
+                  <div class="col-sm-5 ml-2 mt-5 emp" style="border: 3px solid darkseagreen; box-shadow: 1px 1px 11px teal; border-radius:15px; background: darkcyan; background: radial-gradient(#648880, #123d32);">
+                      <h4 style="text-align:center; color: lightcyan; ">Leave</h4>
+                    <hr style="border-color: white;">
                     <div class="row ml-4">
-                      <a href="applyleave.php" style="font-size: 18px; color: darkblue;"><i class="fa fa-plane"></i> Apply Leave</a>
+                      <a href="applyleave.php" style="font-size: 18px;  color:    white;"><i class="fa fa-plane"></i> Apply Leave</a>
                     </div>
                     <div class="row ml-4 mb-3">
-                      <a href="leavehistory.php" style="font-size: 18px; color: darkblue;"><i class="fa fa-history"></i> Leve History</a>
+                      <a href="leavehistory.php" style="font-size: 18px;  color:    white;"><i class="fa fa-history"></i> Leve History</a>
                     </div>
                   </div>
                 </div>
 
                 <div class="row mt-3 ml-3 mr-3 mb-3">
                   <!-- Payroll Part -->
-                  <div class="col-sm-5 ml-2 mt-5 emp" style="border: 1px solid blue;">
-                    <h4 style="text-align:center; color: darkblue;">Payroll</h4>
-                    <hr style="border-color: black;">
+                  <div class="col-sm-5 ml-2 mt-5 emp" style="border: 3px solid darkseagreen; box-shadow: 1px 1px 11px teal; border-radius:15px; background: darkcyan; background: radial-gradient(#648880, #123d32);">
+                      <h4 style="text-align:center; color: lightcyan;">Payroll</h4>
+                    <hr style="border-color: white;">
                     <div class="row ml-4 mb-3">
-                      <a href="pay_roll.php" style="font-size: 18px; color: darkblue;"><i class="fa fa-money"></i> Pay-roll</a>
+                      <a href="pay_roll.php" style="font-size: 18px; color:    white;"><i class="fa fa-money"></i> Pay-roll</a>
                     </div>
                     </div>
                     <div class="col-sm-1">
                     </div>
                     <!-- Notice Part -->
-                    <div class="col-sm-5 ml-2 mt-5 emp" style="border: 1px solid blue;">
-                      <h4 style="text-align:center; color: darkblue;">Notice</h4>
-                      <hr style="border-color: black;">
+                    <div class="col-sm-5 ml-2 mt-5 emp" style="border: 3px solid darkseagreen; box-shadow: 1px 1px 11px teal; border-radius:15px; background: darkcyan; background: radial-gradient(#648880, #123d32);">
+                        <h4 style="text-align:center; color: lightcyan;">Notice</h4>
+                      <hr style="border-color: white;">
                       <div class="row ml-4 mb-3">
-                        <a href="noticeboard.php" style="font-size: 18px; color: darkblue;"><i class="fa fa-list-alt"></i> Noticeboard</a>
+                        <a href="noticeboard.php" style="font-size: 18px; color:    white;"><i class="fa fa-list-alt"></i> Noticeboard</a>
                       </div>
                       </div>
                 </div>

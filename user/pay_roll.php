@@ -106,7 +106,7 @@
                    </div>-->
                    <div class="content-inner">
                      <table id="payslist" class="table table-stripped table-bordered order-column" name="leavehistory">
-                        <thead style="background-color: #660066; color: white;">
+                        <thead class="table-dark">
                             <tr>
                                 <th>Employee Name</th>
                                 <th>Month</th>

@@ -30,7 +30,7 @@
                     <div class="content-inner">
                       <div id="notice">
                         <table id="leavehistory" class="table table-stripped table-bordered" name="leavehistory">
-                           <thead style="background-color: #660066; color: white;">
+                           <thead class="table-dark" style="color: white; font-weight: bold;">
                                <tr>
                                  <th style="width: 5%;">#</th>
                                  <th style="width: 10%;">Date</th>

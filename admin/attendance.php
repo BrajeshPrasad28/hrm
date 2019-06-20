@@ -74,7 +74,7 @@
          <div id="noticeboard_wrapper" style="padding: 15px;">
             <div class="content-inner">
                <table id="noticelist" class="table table-stripped table-bordered order-column" style="width: 100%;">
-                  <thead  style="background-color: #660066; color: white;font-weight: bold;">
+                  <thead  class="table-dark" style="color: white; font-weight: bold;">
                      <th>Employee Id</th>
                      <th>Photo</th>
                      <th>Name</th>

@@ -72,7 +72,7 @@
            <?php include 'salary_add_modal.php'; ?>
            <button  class='btn btn-primary btn-sm reject_btn mb-2' data-toggle="modal" data-target="#add_salary_modal"><i class="fa fa-money"></i> Add</button>
             <table id="salarylist" class="table table-stripped css-serial table-bordered">
-               <thead style="background-color: #660066; color: white;">
+               <thead class="table-dark" style="color: white; font-weight: bold;">
                   <!-- <th>Id</th> -->
                   <th>#</th>
                   <th>Designation</th>

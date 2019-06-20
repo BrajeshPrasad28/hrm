@@ -72,7 +72,7 @@
            <button class="btn btn-info btn-sm mb-2" style="width: 10%;"><a href="payroll.php">Pay</a></button>
            <button class="btn btn-info btn-sm mb-2" style="width: 10%;"><a href="payroll_list.php">Paid List</a></button>
             <table id="salarylist" class="table table-stripped css-serial table-bordered">
-               <thead style="background-color: #660066; color: white;">
+               <thead class="table-dark" style="color: white; font-weight: bold;">
                   <!-- <th>Id</th> -->
                   <th>#</th>
                   <th>Employee ID</th>
